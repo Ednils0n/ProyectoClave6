@@ -95,14 +95,16 @@ namespace ProyectoClave6
                     cmd.Parameters.AddWithValue("@contrasena", txtContra.Text);
 
                     // Ejecutar la consulta
-                    int userCount = Convert.ToInt32(cmd.ExecuteScalar());
+                    object result = cmd.ExecuteScalar();
+
+                    // Validar que el resultado no sea nulo y convertirlo a entero
+                    int userCount = (result != null) ? Convert.ToInt32(result) : 0;
 
                     // Verificar si se encontró el usuario
                     if (userCount > 0)
                     {
-                        // Si el usuario existe, permitir el inicio de sesión (sin mensaje)
+                        // Si el usuario existe, permitir el inicio de sesión
                         MessageBox.Show("Inicio de sesión exitoso.");
-                        // Aquí puedes agregar la lógica para redirigir al usuario a la siguiente ventana de tu aplicación
 
                         // Crear una instancia de Form3
                         Form3 form3 = new Form3();
@@ -110,13 +112,12 @@ namespace ProyectoClave6
                         // Mostrar Form3
                         form3.Show();
 
-                        // Ocultar el Form1 actual (opcionalmente, puedes usar Close() si quieres cerrarlo)
+                        // Ocultar el Form1 actual
                         this.Hide();
-
                     }
                     else
                     {
-                        // Si no se encuentra el usuario, mostrar un mensaje y NO registrar automáticamente
+                        // Si no se encuentra el usuario, mostrar un mensaje
                         MessageBox.Show("Error: El usuario no está registrado. Por favor, registre una cuenta.");
                     }
                 }
@@ -131,8 +132,16 @@ namespace ProyectoClave6
                 // Manejo de otros errores generales
                 MessageBox.Show("Error al verificar los datos: " + ex.Message);
             }
-           
-            //_Prueba Git
+            finally
+            {
+                // Cerrar la conexión si está abierta
+                if (conn.State == System.Data.ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+
+                //_Prueba Git
 
         }
 
