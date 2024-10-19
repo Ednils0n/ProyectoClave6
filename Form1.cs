@@ -82,28 +82,27 @@ namespace ProyectoClave6
                 if (string.IsNullOrWhiteSpace(txtSesion.Text) || string.IsNullOrWhiteSpace(txtContra.Text))
                 {
                     MessageBox.Show("Por favor, complete ambos campos: nombre de usuario y contraseña.");
-                    return;  // Salir si los campos están vacíos
+                    return;
                 }
 
-                // Crear la consulta para verificar si el usuario y la contraseña existen
+                // Crear la consulta SQL
                 string query = "SELECT COUNT(*) FROM usuario WHERE nombre_usuario = @nombreUsuario AND contraseña = @contrasena";
 
                 using (MySqlCommand cmd = new MySqlCommand(query, conn))
                 {
-                    // Asignar los parámetros de nombre_usuario y contraseña
+                    // Asignar los parámetros de la consulta
                     cmd.Parameters.AddWithValue("@nombreUsuario", txtSesion.Text);
                     cmd.Parameters.AddWithValue("@contrasena", txtContra.Text);
 
-                    // Ejecutar la consulta y verificar cuántos usuarios existen con esas credenciales
+                    // Ejecutar la consulta y obtener el número de usuarios encontrados
                     int userCount = Convert.ToInt32(cmd.ExecuteScalar());
 
-                    // Si se encuentra un usuario, iniciar sesión y mostrar Form3
+                    // Si se encuentra un usuario, redirigir a Form3
                     if (userCount > 0)
                     {
-                        MessageBox.Show("Inicio de sesión exitoso.");
                         Form3 form3 = new Form3();
                         form3.Show();
-                        this.Hide();  // Ocultar Form1
+                        this.Hide();  // Ocultar Form1 actual
                     }
                     else
                     {
@@ -117,7 +116,7 @@ namespace ProyectoClave6
             }
             catch (Exception ex)
             {
-                // Capturamos cualquier error fuera del control SQL
+                // Capturar cualquier otro error general
                 MessageBox.Show("Error inesperado: " + ex.Message);
             }
         }
