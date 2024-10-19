@@ -90,17 +90,16 @@ namespace ProyectoClave6
 
                 using (MySqlCommand cmd = new MySqlCommand(query, conn))
                 {
-                    // Asignar los parámetros
+                    // Asignar los parámetros de nombre_usuario y contraseña
                     cmd.Parameters.AddWithValue("@nombreUsuario", txtSesion.Text);
                     cmd.Parameters.AddWithValue("@contrasena", txtContra.Text);
 
-                    // Ejecutar la consulta
+                    // Ejecutar la consulta y verificar cuántos usuarios existen con esas credenciales
                     int userCount = Convert.ToInt32(cmd.ExecuteScalar());
 
-                    // Verificar si el usuario existe
+                    // Si se encuentra un usuario, iniciar sesión y mostrar Form3
                     if (userCount > 0)
                     {
-                        // Si el usuario existe, permitir el inicio de sesión y pasar a Form3
                         MessageBox.Show("Inicio de sesión exitoso.");
                         Form3 form3 = new Form3();
                         form3.Show();
@@ -108,19 +107,17 @@ namespace ProyectoClave6
                     }
                     else
                     {
-                        // Si el usuario no existe, mostrar un mensaje
                         MessageBox.Show("Usuario o contraseña incorrectos. Verifique sus credenciales.");
                     }
                 }
             }
             catch (MySqlException ex)
             {
-                // Capturar errores de MySQL
                 MessageBox.Show("Error en la base de datos: " + ex.Message);
             }
             catch (Exception ex)
             {
-                // Capturar cualquier otro error
+                // Capturamos cualquier error fuera del control SQL
                 MessageBox.Show("Error inesperado: " + ex.Message);
             }
         }
