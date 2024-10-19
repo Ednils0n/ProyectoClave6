@@ -47,7 +47,7 @@ namespace ProyectoClave6
             // dgvReserva
             // 
             this.dgvReserva.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvReserva.Location = new System.Drawing.Point(97, 198);
+            this.dgvReserva.Location = new System.Drawing.Point(70, 202);
             this.dgvReserva.Name = "dgvReserva";
             this.dgvReserva.Size = new System.Drawing.Size(680, 130);
             this.dgvReserva.TabIndex = 1;
