@@ -85,6 +85,13 @@ namespace ProyectoClave6
                     return;
                 }
 
+                // Validar que el usuario y la contraseña sean iguales
+                if (txtSesion.Text == txtContra.Text)
+                {
+                    MessageBox.Show("Error: El nombre de usuario y la contraseña no pueden ser iguales.");
+                    return;
+                }
+
                 // Crear la consulta SQL
                 string query = "SELECT COUNT(*) FROM usuario WHERE nombre_usuario = @nombreUsuario AND contraseña = @contrasena";
 
@@ -97,12 +104,15 @@ namespace ProyectoClave6
                     // Ejecutar la consulta y obtener el número de usuarios encontrados
                     int userCount = Convert.ToInt32(cmd.ExecuteScalar());
 
-                    // Si se encuentra un usuario, redirigir a Form3
+                    // Si se encuentra un usuario, mostrar el mensaje de éxito y redirigir a Form3
                     if (userCount > 0)
                     {
+                        // Mostrar mensaje de éxito antes de pasar al Form3
+                        MessageBox.Show("Inicio de sesión exitoso.");
+
                         Form3 form3 = new Form3();
                         form3.Show();
-                        this.Hide();  // Ocultar Form1 actual
+                        this.Hide();  // Ocultar el Form1 actual
                     }
                     else
                     {
