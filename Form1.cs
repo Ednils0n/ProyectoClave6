@@ -103,6 +103,16 @@ namespace ProyectoClave6
                         // Si el usuario existe, permitir el inicio de sesión (sin mensaje)
                         MessageBox.Show("Inicio de sesión exitoso.");
                         // Aquí puedes agregar la lógica para redirigir al usuario a la siguiente ventana de tu aplicación
+
+                        // Crear una instancia de Form3
+                        Form3 form3 = new Form3();
+
+                        // Mostrar Form3
+                        form3.Show();
+
+                        // Ocultar el Form1 actual (opcionalmente, puedes usar Close() si quieres cerrarlo)
+                        this.Hide();
+
                     }
                     else
                     {
