@@ -97,11 +97,17 @@ namespace ProyectoClave6
                     // Ejecutar la consulta
                     object result = cmd.ExecuteScalar();
 
-                    // Validar si la consulta devuelve un valor
-                    if (result != null && result != DBNull.Value)
+                    // Comprobación de depuración: ¿Qué devuelve el resultado?
+                    if (result == null)
                     {
-                        int userCount = Convert.ToInt32(result);
+                        MessageBox.Show("Error: La consulta no devolvió ningún resultado.");
+                        return;
+                    }
 
+                    // Asegurarse de que el valor no sea nulo o un valor no esperado
+                    int userCount = 0;
+                    if (int.TryParse(result.ToString(), out userCount))
+                    {
                         // Verificar si se encontró el usuario
                         if (userCount > 0)
                         {
@@ -125,8 +131,7 @@ namespace ProyectoClave6
                     }
                     else
                     {
-                        // Si el resultado es null o no válido
-                        MessageBox.Show("Error: No se encontraron datos. Por favor, verifique los detalles de inicio de sesión.");
+                        MessageBox.Show("Error: El resultado no es un número válido.");
                     }
                 }
             }
