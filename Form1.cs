@@ -70,21 +70,21 @@ namespace ProyectoClave6
 
         private void btnIniciarSesion_Click(object sender, EventArgs e)
         {
-            // Crear una instancia de la clase CConexion
-            CConexion conexion = new CConexion();
-
-            // Obtener la conexión establecida
-            MySqlConnection conn = conexion.EstablecerConexion();
-
-            // Verificar si los campos están vacíos
-            if (string.IsNullOrWhiteSpace(txtSesion.Text) || string.IsNullOrWhiteSpace(txtContra.Text))
-            {
-                MessageBox.Show("Error: Los campos de nombre de usuario y contraseña no pueden estar vacíos. Por favor, complete ambos campos.");
-                return;  // Salir del método si los campos están vacíos
-            }
-
             try
             {
+                // Crear una instancia de la clase CConexion
+                CConexion conexion = new CConexion();
+
+                // Obtener la conexión establecida
+                MySqlConnection conn = conexion.EstablecerConexion();
+
+                // Verificar si los campos están vacíos
+                if (string.IsNullOrWhiteSpace(txtSesion.Text) || string.IsNullOrWhiteSpace(txtContra.Text))
+                {
+                    MessageBox.Show("Por favor, complete ambos campos: nombre de usuario y contraseña.");
+                    return;  // Salir si los campos están vacíos
+                }
+
                 // Crear la consulta para verificar si el usuario y la contraseña existen
                 string query = "SELECT COUNT(*) FROM usuario WHERE nombre_usuario = @nombreUsuario AND contraseña = @contrasena";
 
@@ -95,55 +95,33 @@ namespace ProyectoClave6
                     cmd.Parameters.AddWithValue("@contrasena", txtContra.Text);
 
                     // Ejecutar la consulta
-                    object result = cmd.ExecuteScalar();
+                    int userCount = Convert.ToInt32(cmd.ExecuteScalar());
 
-                    // Comprobación de depuración: ¿Qué devuelve el resultado?
-                    if (result == null)
+                    // Verificar si el usuario existe
+                    if (userCount > 0)
                     {
-                        MessageBox.Show("Error: La consulta no devolvió ningún resultado.");
-                        return;
-                    }
-
-                    // Asegurarse de que el valor no sea nulo o un valor no esperado
-                    int userCount = 0;
-                    if (int.TryParse(result.ToString(), out userCount))
-                    {
-                        // Verificar si se encontró el usuario
-                        if (userCount > 0)
-                        {
-                            // Si el usuario existe, permitir el inicio de sesión
-                            MessageBox.Show("Inicio de sesión exitoso.");
-
-                            // Crear una instancia de Form3
-                            Form3 form3 = new Form3();
-
-                            // Mostrar Form3
-                            form3.Show();
-
-                            // Ocultar el Form1 actual
-                            this.Hide();
-                        }
-                        else
-                        {
-                            // Si no se encuentra el usuario, mostrar un mensaje
-                            MessageBox.Show("Error: El usuario no está registrado. Por favor, registre una cuenta.");
-                        }
+                        // Si el usuario existe, permitir el inicio de sesión y pasar a Form3
+                        MessageBox.Show("Inicio de sesión exitoso.");
+                        Form3 form3 = new Form3();
+                        form3.Show();
+                        this.Hide();  // Ocultar Form1
                     }
                     else
                     {
-                        MessageBox.Show("Error: El resultado no es un número válido.");
+                        // Si el usuario no existe, mostrar un mensaje
+                        MessageBox.Show("Usuario o contraseña incorrectos. Verifique sus credenciales.");
                     }
                 }
             }
             catch (MySqlException ex)
             {
-                // Capturar errores de MySQL y mostrar detalles adicionales
-                MessageBox.Show("Error de MySQL: " + ex.Message + "\nCódigo de error: " + ex.Number);
+                // Capturar errores de MySQL
+                MessageBox.Show("Error en la base de datos: " + ex.Message);
             }
             catch (Exception ex)
             {
-                // Manejo de otros errores generales
-                MessageBox.Show("Error al verificar los datos: " + ex.Message);
+                // Capturar cualquier otro error
+                MessageBox.Show("Error inesperado: " + ex.Message);
             }
         }
     }
