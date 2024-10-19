@@ -95,27 +95,38 @@ namespace ProyectoClave6
                     cmd.Parameters.AddWithValue("@contrasena", txtContra.Text);
 
                     // Ejecutar la consulta
-                    int userCount = Convert.ToInt32(cmd.ExecuteScalar());
+                    object result = cmd.ExecuteScalar();
 
-                    // Verificar si se encontró el usuario
-                    if (userCount > 0)
+                    // Validar si la consulta devuelve un valor
+                    if (result != null && result != DBNull.Value)
                     {
-                        // Si el usuario existe, permitir el inicio de sesión
-                        MessageBox.Show("Inicio de sesión exitoso.");
+                        int userCount = Convert.ToInt32(result);
 
-                        // Crear una instancia de Form3
-                        Form3 form3 = new Form3();
+                        // Verificar si se encontró el usuario
+                        if (userCount > 0)
+                        {
+                            // Si el usuario existe, permitir el inicio de sesión
+                            MessageBox.Show("Inicio de sesión exitoso.");
 
-                        // Mostrar Form3
-                        form3.Show();
+                            // Crear una instancia de Form3
+                            Form3 form3 = new Form3();
 
-                        // Ocultar el Form1 actual
-                        this.Hide();
+                            // Mostrar Form3
+                            form3.Show();
+
+                            // Ocultar el Form1 actual
+                            this.Hide();
+                        }
+                        else
+                        {
+                            // Si no se encuentra el usuario, mostrar un mensaje
+                            MessageBox.Show("Error: El usuario no está registrado. Por favor, registre una cuenta.");
+                        }
                     }
                     else
                     {
-                        // Si no se encuentra el usuario, mostrar un mensaje
-                        MessageBox.Show("Error: El usuario no está registrado. Por favor, registre una cuenta.");
+                        // Si el resultado es null o no válido
+                        MessageBox.Show("Error: No se encontraron datos. Por favor, verifique los detalles de inicio de sesión.");
                     }
                 }
             }
@@ -128,14 +139,6 @@ namespace ProyectoClave6
             {
                 // Manejo de otros errores generales
                 MessageBox.Show("Error al verificar los datos: " + ex.Message);
-            }
-            finally
-            {
-                // Cerrar la conexión si está abierta
-                if (conn.State == System.Data.ConnectionState.Open)
-                {
-                    conn.Close();
-                }
             }
         }
     }
