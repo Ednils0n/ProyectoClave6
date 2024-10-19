@@ -30,6 +30,8 @@ namespace ProyectoClave6
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
+            this.dgvReserva = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvReserva)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -42,14 +44,24 @@ namespace ProyectoClave6
             this.label1.TabIndex = 0;
             this.label1.Text = "Servicio de Reservacion de Salas";
             // 
+            // dgvReserva
+            // 
+            this.dgvReserva.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvReserva.Location = new System.Drawing.Point(97, 198);
+            this.dgvReserva.Name = "dgvReserva";
+            this.dgvReserva.Size = new System.Drawing.Size(680, 130);
+            this.dgvReserva.TabIndex = 1;
+            // 
             // Form3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(848, 450);
+            this.Controls.Add(this.dgvReserva);
             this.Controls.Add(this.label1);
             this.Name = "Form3";
             this.Text = "Form3";
+            ((System.ComponentModel.ISupportInitialize)(this.dgvReserva)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -58,5 +70,6 @@ namespace ProyectoClave6
         #endregion
 
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.DataGridView dgvReserva;
     }
 }
