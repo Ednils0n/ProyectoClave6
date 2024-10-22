@@ -30,6 +30,20 @@ namespace ProyectoClave6
 
         private void btnRegistrar1_Click(object sender, EventArgs e)
         {
+            // Crear una instancia de Usuario y realizar el registro
+            Usuario usuario = new Usuario(txtNombre.Text, txtContra.Text);
+            if (usuario.RegistrarUsuario())
+            {
+                MessageBox.Show("Usuario registrado exitosamente.");
+                Form1 formLogin = new Form1();
+                formLogin.Show();
+                this.Close();  // Cerrar el Form2
+            }
+            else
+            {
+                MessageBox.Show("Error: El nombre de usuario ya está registrado. Elija otro nombre.");
+            }
+
             // Crear una instancia de la clase CConexion
             CConexion conexion = new CConexion();
 
