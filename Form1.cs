@@ -70,6 +70,20 @@ namespace ProyectoClave6
 
         private void btnIniciarSesion_Click(object sender, EventArgs e)
         {
+            // Crear una instancia de Usuario y realizar el inicio de sesión
+            Usuario usuario = new Usuario(txtSesion.Text, txtContra.Text);
+            if (usuario.IniciarSesion())
+            {
+                MessageBox.Show("Inicio de sesión exitoso.");
+                Form3 form3 = new Form3();
+                form3.Show();
+                this.Hide();  // Ocultar Form1 actual
+            }
+            else
+            {
+                MessageBox.Show("Usuario o contraseña incorrectos. Verifique sus credenciales.");
+            }
+
             try
             {
                 // Crear una instancia de la clase CConexion
