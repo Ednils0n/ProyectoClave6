@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using Microsoft.VisualBasic;
+
 
 namespace ProyectoClave6
 {
@@ -143,6 +145,94 @@ namespace ProyectoClave6
             catch (Exception ex)
             {
                 MessageBox.Show("Error inesperado: " + ex.Message);
+            }
+        }
+
+        private void btnEliminarUsuario_Click(object sender, EventArgs e)
+        {
+            {
+                // Pedir el nombre de usuario mediante un cuadro de entrada flotante
+                string nombreUsuario = Interaction.InputBox("Ingrese el nombre de usuario a eliminar:",
+                                                            "Eliminar Usuario",
+                                                            "");
+
+                if (string.IsNullOrWhiteSpace(nombreUsuario))
+                {
+                    MessageBox.Show("Debe ingresar un nombre de usuario para continuar.");
+                    return;
+                }
+
+                // Pedir la contraseña mediante un cuadro de entrada flotante
+                string contrasena = Interaction.InputBox("Ingrese la contraseña del usuario:",
+                                                         "Eliminar Usuario",
+                                                         "");
+
+                if (string.IsNullOrWhiteSpace(contrasena))
+                {
+                    MessageBox.Show("Debe ingresar la contraseña para continuar.");
+                    return;
+                }
+
+                // Confirmar la eliminación del usuario
+                DialogResult result = MessageBox.Show($"¿Está seguro de que desea eliminar el usuario '{nombreUsuario}'?",
+                                                      "Confirmar eliminación",
+                                                      MessageBoxButtons.YesNo,
+                                                      MessageBoxIcon.Warning);
+
+                if (result == DialogResult.Yes)
+                {
+                    try
+                    {
+                        // Crear la conexión a la base de datos
+                        CConexion conexion = new CConexion("usuarioEjemplo", "contrasenaEjemplo");
+                        MySqlConnection conn = conexion.EstablecerConexion();
+
+                        // Verificar si el usuario y la contraseña coinciden
+                        string checkQuery = "SELECT COUNT(*) FROM usuario WHERE nombre_usuario = @nombreUsuario AND contraseña = @contrasena";
+
+                        using (MySqlCommand checkCmd = new MySqlCommand(checkQuery, conn))
+                        {
+                            checkCmd.Parameters.AddWithValue("@nombreUsuario", nombreUsuario);
+                            checkCmd.Parameters.AddWithValue("@contrasena", contrasena);
+
+                            int userCount = Convert.ToInt32(checkCmd.ExecuteScalar());
+
+                            if (userCount == 0)
+                            {
+                                MessageBox.Show("Usuario o contraseña incorrectos.");
+                                return;
+                            }
+                        }
+
+                        // Si el usuario existe, proceder con la eliminación
+                        string deleteQuery = "DELETE FROM usuario WHERE nombre_usuario = @nombreUsuario AND contraseña = @contrasena";
+
+                        using (MySqlCommand cmd = new MySqlCommand(deleteQuery, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@nombreUsuario", nombreUsuario);
+                            cmd.Parameters.AddWithValue("@contrasena", contrasena);
+
+                            int rowsAffected = cmd.ExecuteNonQuery();
+
+                            if (rowsAffected > 0)
+                            {
+                                MessageBox.Show("Usuario eliminado exitosamente.");
+                            }
+                            else
+                            {
+                                MessageBox.Show("No se encontró un usuario con esos datos.");
+                            }
+                        }
+                    }
+                    catch (MySqlException ex)
+                    {
+                        MessageBox.Show("Error en la base de datos: " + ex.Message);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error inesperado: " + ex.Message);
+                    }
+                }
             }
         }
     }

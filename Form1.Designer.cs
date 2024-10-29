@@ -39,6 +39,7 @@ namespace ProyectoClave6
             this.btnIniciarSesion = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.btnEliminarUsuario = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnSalir
@@ -140,12 +141,24 @@ namespace ProyectoClave6
             this.label4.TabIndex = 9;
             this.label4.Text = "Si usted no posee usuario y contraseña registrese Aqui.";
             // 
+            // btnEliminarUsuario
+            // 
+            this.btnEliminarUsuario.Font = new System.Drawing.Font("Arial Rounded MT Bold", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnEliminarUsuario.Location = new System.Drawing.Point(379, 300);
+            this.btnEliminarUsuario.Name = "btnEliminarUsuario";
+            this.btnEliminarUsuario.Size = new System.Drawing.Size(92, 46);
+            this.btnEliminarUsuario.TabIndex = 10;
+            this.btnEliminarUsuario.Text = "Eliminar Usuario";
+            this.btnEliminarUsuario.UseVisualStyleBackColor = true;
+            this.btnEliminarUsuario.Click += new System.EventHandler(this.btnEliminarUsuario_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonShadow;
             this.ClientSize = new System.Drawing.Size(867, 443);
+            this.Controls.Add(this.btnEliminarUsuario);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.btnIniciarSesion);
@@ -175,6 +188,7 @@ namespace ProyectoClave6
         private System.Windows.Forms.Button btnIniciarSesion;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button btnEliminarUsuario;
     }
 }
 
