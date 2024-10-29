@@ -89,8 +89,10 @@ namespace ProyectoClave6
                 // Crear la consulta de inserción
                 string query = "INSERT INTO reserva (usuario, fecha, menu1, menu2, menu3, total) VALUES (@usuario, @fecha, @menu1, @menu2, @menu3, @total)";
 
-                // Crear la conexión
-                CConexion conexionObj = new CConexion();
+                // Crear la conexión con los parámetros requeridos
+                string nombreUsuario = "usuarioEjemplo";  // Reemplaza con el nombre de usuario correcto
+                string contrasena = "contrasenaEjemplo";  // Reemplaza con la contraseña correcta
+                CConexion conexionObj = new CConexion(nombreUsuario, contrasena);
                 MySqlConnection conexion = conexionObj.EstablecerConexion();
 
                 using (MySqlCommand cmd = new MySqlCommand(query, conexion))

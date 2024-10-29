@@ -8,22 +8,28 @@ using MySql.Data.MySqlClient;
 
 namespace ProyectoClave6
 {
-    class CConexion
+    // Clase CConexion que hereda de Usuario
+    class CConexion : Usuario
     {
-        MySqlConnection conex = new MySqlConnection();
+        private MySqlConnection conex = new MySqlConnection();
 
+        // Propiedades estáticas para la conexión
         static string servidor = "localhost";
-        static string bd = "Proyecto6";      
+        static string bd = "Proyecto6";
         static string usuario = "root";
         static string password = "ednilson";
         static string puerto = "3306";
 
+        // Cadena de conexión
         static string cadenaConexion = "server=" + servidor + ";" + "port=" + puerto + ";" +
-            "user id=" + usuario + ";" + "password=" + password + ";" + "database=" + bd + ";";     
+            "user id=" + usuario + ";" + "password=" + password + ";" + "database=" + bd + ";";
 
-        public object Messagebox { get; private set; }
+        // Constructor de la clase CConexion que llama al constructor de Usuario
+        public CConexion(string nombreUsuario, string contrasena) : base(nombreUsuario, contrasena)
+        {
+        }
 
-
+        // Método para establecer la conexión
         public MySqlConnection EstablecerConexion()
         {
             try
@@ -32,9 +38,6 @@ namespace ProyectoClave6
                 {
                     conex.ConnectionString = cadenaConexion;
                     conex.Open();
-
-                    // Comentamos o eliminamos esta línea
-                    // MessageBox.Show("Se conectó con éxito a la base de datos");
                 }
             }
             catch (MySqlException ex)
@@ -44,6 +47,5 @@ namespace ProyectoClave6
 
             return conex;
         }
-
     }
 }

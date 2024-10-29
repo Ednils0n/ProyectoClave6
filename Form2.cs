@@ -30,6 +30,13 @@ namespace ProyectoClave6
 
         private void btnRegistrar1_Click(object sender, EventArgs e)
         {
+            // Verificar si los campos están vacíos antes de cualquier operación
+            if (string.IsNullOrWhiteSpace(txtNombre.Text) || string.IsNullOrWhiteSpace(txtContra.Text))
+            {
+                MessageBox.Show("Error: Los campos de nombre de usuario y contraseña no pueden estar vacíos. Por favor, complete ambos campos.");
+                return;  // Salir del método si los campos están vacíos
+            }
+
             // Crear una instancia de Usuario y realizar el registro
             Usuario usuario = new Usuario(txtNombre.Text, txtContra.Text);
             if (usuario.RegistrarUsuario())
@@ -38,27 +45,22 @@ namespace ProyectoClave6
                 Form1 formLogin = new Form1();
                 formLogin.Show();
                 this.Close();  // Cerrar el Form2
+                return;  // Salir del método después de un registro exitoso
             }
             else
             {
                 MessageBox.Show("Error: El nombre de usuario ya está registrado. Elija otro nombre.");
-            }
-
-            // Crear una instancia de la clase CConexion
-            CConexion conexion = new CConexion();
-
-            // Obtener la conexión establecida
-            MySqlConnection conn = conexion.EstablecerConexion();
-
-            // Verificar si los campos están vacíos
-            if (string.IsNullOrWhiteSpace(txtNombre.Text) || string.IsNullOrWhiteSpace(txtContra.Text))
-            {
-                MessageBox.Show("Error: Los campos de nombre de usuario y contraseña no pueden estar vacíos. Por favor, complete ambos campos.");
-                return;  // Salir del método si los campos están vacíos
+                return;
             }
 
             try
             {
+                // Crear una instancia de la clase CConexion con los argumentos requeridos
+                CConexion conexion = new CConexion(txtNombre.Text, txtContra.Text);
+
+                // Obtener la conexión establecida
+                MySqlConnection conn = conexion.EstablecerConexion();
+
                 // Verificar si el usuario ya existe en la base de datos
                 string query = "SELECT COUNT(*) FROM usuario WHERE nombre_usuario = @nombreUsuario";
 
@@ -107,7 +109,6 @@ namespace ProyectoClave6
                 // Manejo de otros errores generales
                 MessageBox.Show("Error al registrar los datos: " + ex.Message);
             }
-            
         }
     }
 }

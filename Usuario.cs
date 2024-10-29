@@ -7,10 +7,12 @@ using MySql.Data.MySqlClient;
 
 namespace ProyectoClave6
 {
+   // Clase Usuario (clase base)
     class Usuario
     {
         public string NombreUsuario { get; set; }
         public string Contrasena { get; set; }
+
         // Constructor de la clase Usuario
         public Usuario(string nombreUsuario, string contrasena)
         {
@@ -21,7 +23,7 @@ namespace ProyectoClave6
         // Método para iniciar sesión
         public bool IniciarSesion()
         {
-            CConexion conexion = new CConexion();
+            CConexion conexion = new CConexion(NombreUsuario, Contrasena);
             MySqlConnection conn = conexion.EstablecerConexion();
 
             string query = "SELECT COUNT(*) FROM usuario WHERE nombre_usuario = @nombreUsuario AND contraseña = @contrasena";
@@ -32,17 +34,17 @@ namespace ProyectoClave6
                 cmd.Parameters.AddWithValue("@contrasena", Contrasena);
 
                 int userCount = Convert.ToInt32(cmd.ExecuteScalar());
-                return userCount > 0;  // Devuelve true si existe el usuario
+                return userCount > 0;
             }
         }
 
         // Método para registrar un nuevo usuario
         public bool RegistrarUsuario()
         {
-            CConexion conexion = new CConexion();
+            CConexion conexion = new CConexion(NombreUsuario, Contrasena);
             MySqlConnection conn = conexion.EstablecerConexion();
 
-            // Primero, verificamos si el usuario ya existe
+            // Verificar si el usuario ya existe
             string checkQuery = "SELECT COUNT(*) FROM usuario WHERE nombre_usuario = @nombreUsuario";
 
             using (MySqlCommand checkCmd = new MySqlCommand(checkQuery, conn))
@@ -56,7 +58,7 @@ namespace ProyectoClave6
                 }
             }
 
-            // Si no existe, procedemos a registrar el usuario
+            // Registrar un nuevo usuario
             string insertQuery = "INSERT INTO usuario (nombre_usuario, contraseña) VALUES (@nombreUsuario, @contrasena)";
 
             using (MySqlCommand cmd = new MySqlCommand(insertQuery, conn))

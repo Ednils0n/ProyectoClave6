@@ -22,14 +22,16 @@ namespace ProyectoClave6
 
         private void btnConectar_Click(object sender, EventArgs e)
         {
-            // Crea una instancia de la clase CConexion y utiliza el método EstablecerConexion
-            CConexion conexionObj = new CConexion();
+            // Crear una instancia de la clase CConexion con los argumentos necesarios
+            string nombreUsuario = "usuarioEjemplo";  // Reemplaza con el nombre de usuario real
+            string contrasena = "contrasenaEjemplo";  // Reemplaza con la contraseña real
+
+            CConexion conexionObj = new CConexion(nombreUsuario, contrasena);
             MySqlConnection conexion = conexionObj.EstablecerConexion();
 
-            if (conexion != null)
+            if (conexion != null && conexion.State == System.Data.ConnectionState.Open)
             {
                 MessageBox.Show("Conexión exitosa");
-
             }
             else
             {
@@ -70,11 +72,27 @@ namespace ProyectoClave6
 
         private void btnIniciarSesion_Click(object sender, EventArgs e)
         {
-            // Crear una instancia de Usuario y realizar el inicio de sesión
+            // Verificar si los campos están vacíos
+            if (string.IsNullOrWhiteSpace(txtSesion.Text) || string.IsNullOrWhiteSpace(txtContra.Text))
+            {
+                MessageBox.Show("Por favor, complete ambos campos: nombre de usuario y contraseña.");
+                return;
+            }
+
+            // Validar que el usuario y la contraseña sean diferentes
+            if (txtSesion.Text == txtContra.Text)
+            {
+                MessageBox.Show("Error: El nombre de usuario y la contraseña no pueden ser iguales.");
+                return;
+            }
+
+            // Crear una instancia de Usuario e intentar iniciar sesión
             Usuario usuario = new Usuario(txtSesion.Text, txtContra.Text);
             if (usuario.IniciarSesion())
             {
                 MessageBox.Show("Inicio de sesión exitoso.");
+
+                // Crear una instancia de Form3 y mostrarlo
                 Form3 form3 = new Form3();
                 form3.Show();
                 this.Hide();  // Ocultar Form1 actual
@@ -82,29 +100,14 @@ namespace ProyectoClave6
             else
             {
                 MessageBox.Show("Usuario o contraseña incorrectos. Verifique sus credenciales.");
+                return;
             }
 
             try
             {
-                // Crear una instancia de la clase CConexion
-                CConexion conexion = new CConexion();
-
-                // Obtener la conexión establecida
+                // Crear una instancia de la clase CConexion con el nombre de usuario y la contraseña ingresados
+                CConexion conexion = new CConexion(txtSesion.Text, txtContra.Text);
                 MySqlConnection conn = conexion.EstablecerConexion();
-
-                // Verificar si los campos están vacíos
-                if (string.IsNullOrWhiteSpace(txtSesion.Text) || string.IsNullOrWhiteSpace(txtContra.Text))
-                {
-                    MessageBox.Show("Por favor, complete ambos campos: nombre de usuario y contraseña.");
-                    return;
-                }
-
-                // Validar que el usuario y la contraseña sean iguales
-                if (txtSesion.Text == txtContra.Text)
-                {
-                    MessageBox.Show("Error: El nombre de usuario y la contraseña no pueden ser iguales.");
-                    return;
-                }
 
                 // Crear la consulta SQL
                 string query = "SELECT COUNT(*) FROM usuario WHERE nombre_usuario = @nombreUsuario AND contraseña = @contrasena";
@@ -118,15 +121,14 @@ namespace ProyectoClave6
                     // Ejecutar la consulta y obtener el número de usuarios encontrados
                     int userCount = Convert.ToInt32(cmd.ExecuteScalar());
 
-                    // Si se encuentra un usuario, mostrar el mensaje de éxito y redirigir a Form3
                     if (userCount > 0)
                     {
-                        // Mostrar mensaje de éxito antes de pasar al Form3
+                        // Mostrar mensaje de éxito antes de pasar a Form3
                         MessageBox.Show("Inicio de sesión exitoso.");
 
                         Form3 form3 = new Form3();
                         form3.Show();
-                        this.Hide();  // Ocultar el Form1 actual
+                        this.Hide();  // Ocultar Form1 actual
                     }
                     else
                     {
@@ -140,7 +142,6 @@ namespace ProyectoClave6
             }
             catch (Exception ex)
             {
-                // Capturar cualquier otro error general
                 MessageBox.Show("Error inesperado: " + ex.Message);
             }
         }
