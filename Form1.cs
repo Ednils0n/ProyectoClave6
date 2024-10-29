@@ -24,9 +24,9 @@ namespace ProyectoClave6
 
         private void btnConectar_Click(object sender, EventArgs e)
         {
-            // Crear una instancia de la clase CConexion con los argumentos necesarios
-            string nombreUsuario = "usuarioEjemplo";  // Reemplaza con el nombre de usuario real
-            string contrasena = "contrasenaEjemplo";  // Reemplaza con la contraseña real
+            // Crear una instancia de la clase CConexion 
+            string nombreUsuario = "usuarioEjemplo";  
+            string contrasena = "contrasenaEjemplo";  
 
             CConexion conexionObj = new CConexion(nombreUsuario, contrasena);
             MySqlConnection conexion = conexionObj.EstablecerConexion();
