@@ -49,25 +49,37 @@ namespace ProyectoClave6
             dgvReserva.AllowUserToAddRows = false;
         }
 
-        private void button1_Click(object sender, EventArgs e) //Se me olvido ponerle nombre:"")
+        private void button1_Click(object sender, EventArgs e)
         {
             try
             {
-                // Validar que el número total de asistentes no exceda 25
-                int totalAsistentes = (int)nupMenu1.Value + (int)nupMenu2.Value + (int)nupMenu3.Value;
-
-                if (totalAsistentes > 25)
+                // Validar que el campo de usuario no esté vacío
+                if (string.IsNullOrWhiteSpace(txtReservador.Text))
                 {
-                    MessageBox.Show("El número total de asistentes no puede exceder 25.");
+                    MessageBox.Show("Debe ingresar un nombre de usuario.");
                     return;
                 }
 
-                // Obtener la fecha seleccionada
-                DateTime fechaReserva = dtmReservacion.Value;
+                // Validar que se hayan seleccionado cantidades en los NumericUpDowns
+                if (nupMenu1.Value == 0 && nupMenu2.Value == 0 && nupMenu3.Value == 0)
+                {
+                    MessageBox.Show("Debe seleccionar al menos un menú.");
+                    return;
+                }
 
+                // Validar que se haya seleccionado una fecha válida
+                DateTime fechaReserva = dtmReservacion.Value;
                 if (fechaReserva < DateTime.Now.Date)
                 {
                     MessageBox.Show("No se puede seleccionar una fecha pasada.");
+                    return;
+                }
+
+                // Validar que el número total de asistentes no exceda 25
+                int totalAsistentes = (int)nupMenu1.Value + (int)nupMenu2.Value + (int)nupMenu3.Value;
+                if (totalAsistentes > 25)
+                {
+                    MessageBox.Show("El número total de asistentes no puede exceder 25.");
                     return;
                 }
 
@@ -84,7 +96,7 @@ namespace ProyectoClave6
                 using (MySqlCommand cmd = new MySqlCommand(query, conexion))
                 {
                     // Asignar los valores a los parámetros
-                    cmd.Parameters.AddWithValue("@usuario", "Usuario");  // Puedes obtener el nombre de usuario actual
+                    cmd.Parameters.AddWithValue("@usuario", txtReservador.Text.Trim());  // Usar el nombre de usuario ingresado
                     cmd.Parameters.AddWithValue("@fecha", fechaReserva);
                     cmd.Parameters.AddWithValue("@menu1", nupMenu1.Value);
                     cmd.Parameters.AddWithValue("@menu2", nupMenu2.Value);
@@ -100,7 +112,7 @@ namespace ProyectoClave6
                     int idReserva = Convert.ToInt32(cmd.ExecuteScalar());
 
                     // Añadir los datos al DataGridView
-                    dgvReserva.Rows.Add(idReserva, "Usuario", fechaReserva.ToShortDateString(), nupMenu1.Value, nupMenu2.Value, nupMenu3.Value, totalPagar);
+                    dgvReserva.Rows.Add(idReserva, txtReservador.Text.Trim(), fechaReserva.ToShortDateString(), nupMenu1.Value, nupMenu2.Value, nupMenu3.Value, totalPagar);
                 }
             }
             catch (MySqlException ex)
