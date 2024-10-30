@@ -65,7 +65,7 @@ namespace ProyectoClave6
             this.dgvReserva.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvReserva.Location = new System.Drawing.Point(32, 340);
             this.dgvReserva.Name = "dgvReserva";
-            this.dgvReserva.Size = new System.Drawing.Size(794, 181);
+            this.dgvReserva.Size = new System.Drawing.Size(794, 374);
             this.dgvReserva.TabIndex = 1;
             // 
             // nupMenu1
@@ -188,7 +188,7 @@ namespace ProyectoClave6
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.ClientSize = new System.Drawing.Size(848, 533);
+            this.ClientSize = new System.Drawing.Size(848, 726);
             this.Controls.Add(this.btnBorrarReservacion);
             this.Controls.Add(this.txtReservador);
             this.Controls.Add(this.label7);
