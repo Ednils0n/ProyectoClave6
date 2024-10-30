@@ -7,17 +7,17 @@ using MySql.Data.MySqlClient;
 
 namespace ProyectoClave6
 {
-    // Clase Reserva que hereda de Usuario
+   // Clase Reserva que hereda de Usuario
     class Reserva : Usuario
     {
-        public int IdReserva { get; private set; }
+        public int IdReserva { get; private set; }  // Ahora es solo lectura externa
         public DateTime FechaReserva { get; set; }
         public int Menu1 { get; set; }
         public int Menu2 { get; set; }
         public int Menu3 { get; set; }
         public decimal TotalPagar { get; set; }
 
-        // Constructor de la clase Reserva 
+        // Constructor de la clase Reserva (sin IdReserva)
         public Reserva(string nombreUsuario, string contrasena, DateTime fechaReserva, int menu1, int menu2, int menu3)
             : base(nombreUsuario, contrasena)
         {
@@ -33,6 +33,48 @@ namespace ProyectoClave6
         {
             TotalPagar = (Menu1 * 10) + (Menu2 * 12) + (Menu3 * 15);
         }
-    
+
+        // Método para guardar la reserva en la base de datos
+        public bool GuardarReserva()
+        {
+            try
+            {
+                // Crear una instancia de CConexion con las credenciales de usuario
+                CConexion conexion = new CConexion(NombreUsuario, Contrasena);
+                MySqlConnection conn = conexion.EstablecerConexion();
+
+                // Insertar la reserva en la base de datos
+                string insertQuery = "INSERT INTO reserva (nombre_usuario, fecha_reserva, menu1, menu2, menu3, total_pagar) " +
+                                     "VALUES (@nombreUsuario, @fechaReserva, @menu1, @menu2, @menu3, @totalPagar)";
+
+                using (MySqlCommand cmd = new MySqlCommand(insertQuery, conn))
+                {
+                    cmd.Parameters.AddWithValue("@nombreUsuario", NombreUsuario);
+                    cmd.Parameters.AddWithValue("@fechaReserva", FechaReserva);
+                    cmd.Parameters.AddWithValue("@menu1", Menu1);
+                    cmd.Parameters.AddWithValue("@menu2", Menu2);
+                    cmd.Parameters.AddWithValue("@menu3", Menu3);
+                    cmd.Parameters.AddWithValue("@totalPagar", TotalPagar);
+
+                    cmd.ExecuteNonQuery();
+
+                    // Obtener el último ID insertado de MySQL
+                    cmd.CommandText = "SELECT LAST_INSERT_ID()";
+                    IdReserva = Convert.ToInt32(cmd.ExecuteScalar());  // Asignar el ID generado
+
+                    return true;  // Reserva guardada exitosamente
+                }
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine("Error en la base de datos: " + ex.Message);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error inesperado: " + ex.Message);
+                return false;
+            }
         }
     }
+}
