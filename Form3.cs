@@ -126,5 +126,86 @@ namespace ProyectoClave6
                 MessageBox.Show("Error: " + ex.Message);
             }
         }
+
+        private void btnBorrarReservacion_Click(object sender, EventArgs e)
+        {
+            // Pedir el ID de la reservación mediante un cuadro de entrada flotante
+            string idReservaStr = Interaction.InputBox("Ingrese el ID de la reservación a eliminar:",
+                                                       "Borrar Reservación",
+                                                       "");
+
+            // Verificar si se ingresó un ID
+            if (string.IsNullOrWhiteSpace(idReservaStr))
+            {
+                MessageBox.Show("Debe ingresar un ID de reservación para continuar.");
+                return;
+            }
+
+            // Convertir el ID de la reservación a entero
+            if (!int.TryParse(idReservaStr, out int idReserva))
+            {
+                MessageBox.Show("ID de reservación no válido. Debe ser un número entero.");
+                return;
+            }
+
+            // Confirmar la eliminación de la reservación
+            DialogResult result = MessageBox.Show($"¿Está seguro de que desea eliminar la reservación con ID '{idReserva}'?",
+                                                  "Confirmar eliminación",
+                                                  MessageBoxButtons.YesNo,
+                                                  MessageBoxIcon.Warning);
+
+            if (result == DialogResult.Yes)
+            {
+                try
+                {
+                    // Crear la conexión a la base de datos
+                    CConexion conexion = new CConexion("usuarioEjemplo", "contrasenaEjemplo");
+                    MySqlConnection conn = conexion.EstablecerConexion();
+
+                    // Verificar si la reservación existe
+                    string checkQuery = "SELECT COUNT(*) FROM reserva WHERE id_reserva = @idReserva";
+
+                    using (MySqlCommand checkCmd = new MySqlCommand(checkQuery, conn))
+                    {
+                        checkCmd.Parameters.AddWithValue("@idReserva", idReserva);
+
+                        int reservaCount = Convert.ToInt32(checkCmd.ExecuteScalar());
+
+                        if (reservaCount == 0)
+                        {
+                            MessageBox.Show("No se encontró una reservación con ese ID.");
+                            return;
+                        }
+                    }
+
+                    // Consulta para eliminar la reservación
+                    string deleteQuery = "DELETE FROM reserva WHERE id_reserva = @idReserva";
+
+                    using (MySqlCommand cmd = new MySqlCommand(deleteQuery, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@idReserva", idReserva);
+
+                        int rowsAffected = cmd.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("Reservación eliminada exitosamente.");
+                        }
+                        else
+                        {
+                            MessageBox.Show("No se pudo eliminar la reservación.");
+                        }
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    MessageBox.Show("Error en la base de datos: " + ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error inesperado: " + ex.Message);
+                }
+            }
+        }
     }
 }

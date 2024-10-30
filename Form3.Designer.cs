@@ -43,6 +43,7 @@ namespace ProyectoClave6
             this.button1 = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.txtReservador = new System.Windows.Forms.TextBox();
+            this.btnBorrarReservacion = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvReserva)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nupMenu1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nupMenu2)).BeginInit();
@@ -122,11 +123,11 @@ namespace ProyectoClave6
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(185, 49);
+            this.label5.Location = new System.Drawing.Point(162, 49);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(472, 16);
+            this.label5.Size = new System.Drawing.Size(520, 16);
             this.label5.TabIndex = 8;
-            this.label5.Text = "Selecciones los asistentes que quieran el menu que sin exceder 25\r\n";
+            this.label5.Text = "Selecciones los asistentes que quieran el menu que desee sin exceder 25\r\n";
             // 
             // dtmReservacion
             // 
@@ -147,7 +148,7 @@ namespace ProyectoClave6
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(317, 300);
+            this.button1.Location = new System.Drawing.Point(121, 300);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(281, 34);
             this.button1.TabIndex = 11;
@@ -172,12 +173,23 @@ namespace ProyectoClave6
             this.txtReservador.Size = new System.Drawing.Size(137, 20);
             this.txtReservador.TabIndex = 13;
             // 
+            // btnBorrarReservacion
+            // 
+            this.btnBorrarReservacion.Location = new System.Drawing.Point(475, 300);
+            this.btnBorrarReservacion.Name = "btnBorrarReservacion";
+            this.btnBorrarReservacion.Size = new System.Drawing.Size(281, 34);
+            this.btnBorrarReservacion.TabIndex = 14;
+            this.btnBorrarReservacion.Text = "Borrar Reservacion";
+            this.btnBorrarReservacion.UseVisualStyleBackColor = true;
+            this.btnBorrarReservacion.Click += new System.EventHandler(this.btnBorrarReservacion_Click);
+            // 
             // Form3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.ClientSize = new System.Drawing.Size(848, 533);
+            this.Controls.Add(this.btnBorrarReservacion);
             this.Controls.Add(this.txtReservador);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.button1);
@@ -219,5 +231,6 @@ namespace ProyectoClave6
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txtReservador;
+        private System.Windows.Forms.Button btnBorrarReservacion;
     }
 }
