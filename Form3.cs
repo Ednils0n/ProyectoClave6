@@ -17,8 +17,7 @@ namespace ProyectoClave6
         public Form3()
         {
             InitializeComponent();
-            ConfigurarDataGridView();  // Configurar el DataGridView cuando se crea el Form3
-
+            ConfigurarDataGridView();  // Configurar el DataGridView cuando se crea el Form
         }
 
         private void ConfigurarDataGridView()
@@ -131,11 +130,8 @@ namespace ProyectoClave6
         private void btnBorrarReservacion_Click(object sender, EventArgs e)
         {
             // Pedir el ID de la reservación
-            string idReservaStr = Interaction.InputBox("Ingrese el ID de la reservación a eliminar:",
-                                                       "Borrar Reservación",
-                                                       "");
+            string idReservaStr = Interaction.InputBox("Ingrese el ID de la reservación a eliminar:", "Borrar Reservación", "");
 
-            // Verificar si se ingresó un ID válido
             if (string.IsNullOrWhiteSpace(idReservaStr) || !int.TryParse(idReservaStr, out int idReserva))
             {
                 MessageBox.Show("Debe ingresar un ID de reservación válido.");
@@ -145,25 +141,64 @@ namespace ProyectoClave6
             try
             {
                 // Establecer la conexión a la base de datos
-                CConexion conexion = new CConexion("usuario", "contraseña");  // Ajusta con tu usuario y contraseña
+                CConexion conexion = new CConexion("usuario", "contraseña");
                 MySqlConnection conn = conexion.EstablecerConexion();
 
-                // Consulta DELETE para borrar la reservación
-                string deleteQuery = "DELETE FROM reserva WHERE id_reserva = @idReserva";
+                // Consulta DELETE
+                string deleteQuery = "DELETE FROM reserva WHERE id = @idReserva";
 
                 using (MySqlCommand cmd = new MySqlCommand(deleteQuery, conn))
                 {
                     cmd.Parameters.AddWithValue("@idReserva", idReserva);
-
                     int rowsAffected = cmd.ExecuteNonQuery();
 
                     if (rowsAffected > 0)
                     {
                         MessageBox.Show("Reservación eliminada exitosamente.");
+                        CargarReservaciones();  // Llamar al método para refrescar el DataGridView
                     }
                     else
                     {
                         MessageBox.Show("No se encontró una reservación con ese ID.");
+                    }
+                }
+                conn.Close();  // Cerrar la conexión después de la operación
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show("Error en la base de datos: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error inesperado: " + ex.Message);
+            }
+        }
+
+
+        private void CargarReservaciones()
+        {
+            try
+            {
+                // Limpiar las filas del DataGridView
+                dgvReserva.Rows.Clear();
+
+                // Establecer la conexión a la base de datos
+                CConexion conexion = new CConexion("usuario", "contraseña");  // Ajusta con tus credenciales
+                MySqlConnection conn = conexion.EstablecerConexion();
+
+                // Consulta para obtener todas las reservaciones
+                string selectQuery = "SELECT * FROM reserva";
+
+                using (MySqlCommand cmd = new MySqlCommand(selectQuery, conn))
+                {
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            // Agregar filas al DataGridView
+                            dgvReserva.Rows.Add(reader["id"], reader["usuario"], reader["fecha"],
+                                                reader["menu1"], reader["menu2"], reader["menu3"], reader["total"]);
+                        }
                     }
                 }
 
@@ -180,4 +215,5 @@ namespace ProyectoClave6
         }
     }
 }
+
 
