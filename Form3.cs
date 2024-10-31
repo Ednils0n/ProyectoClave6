@@ -83,47 +83,35 @@ namespace ProyectoClave6
                     return;
                 }
 
-                // Calcular el total a pagar
-                decimal totalPagar = (nupMenu1.Value * 10) + (nupMenu2.Value * 12) + (nupMenu3.Value * 15);
+                // Crear una instancia de Reserva y calcular el total
+                Reserva reserva = new Reserva(
+                    txtReservador.Text.Trim(),
+                    "contrasenaEjemplo",  // Reemplaza con la contraseña correcta si es necesario
+                    fechaReserva,
+                    (int)nupMenu1.Value,
+                    (int)nupMenu2.Value,
+                    (int)nupMenu3.Value
+                );
 
-                // Crear la consulta de inserción
-                string query = "INSERT INTO reserva (usuario, fecha, menu1, menu2, menu3, total) VALUES (@usuario, @fecha, @menu1, @menu2, @menu3, @total)";
-
-                // Crear la conexión con los parámetros requeridos
-                string nombreUsuario = "usuarioEjemplo";  // Reemplaza con el nombre de usuario correcto
-                string contrasena = "contrasenaEjemplo";  // Reemplaza con la contraseña correcta
-                CConexion conexionObj = new CConexion(nombreUsuario, contrasena);
-                MySqlConnection conexion = conexionObj.EstablecerConexion();
-
-                using (MySqlCommand cmd = new MySqlCommand(query, conexion))
+                // Guardar la reserva en la base de datos
+                if (reserva.GuardarReserva())
                 {
-                    // Asignar los valores a los parámetros
-                    cmd.Parameters.AddWithValue("@usuario", txtReservador.Text.Trim());  // Usar el nombre de usuario ingresado
-                    cmd.Parameters.AddWithValue("@fecha", fechaReserva);
-                    cmd.Parameters.AddWithValue("@menu1", nupMenu1.Value);
-                    cmd.Parameters.AddWithValue("@menu2", nupMenu2.Value);
-                    cmd.Parameters.AddWithValue("@menu3", nupMenu3.Value);
-                    cmd.Parameters.AddWithValue("@total", totalPagar);
-
-                    // Ejecutar la consulta
-                    cmd.ExecuteNonQuery();
                     MessageBox.Show("Reserva guardada exitosamente.");
 
-                    // Obtener el último ID insertado
-                    cmd.CommandText = "SELECT LAST_INSERT_ID()";
-                    int idReserva = Convert.ToInt32(cmd.ExecuteScalar());
-
                     // Añadir los datos al DataGridView
-                    dgvReserva.Rows.Add(idReserva, txtReservador.Text.Trim(), fechaReserva.ToShortDateString(), nupMenu1.Value, nupMenu2.Value, nupMenu3.Value, totalPagar);
+                    dgvReserva.Rows.Add(reserva.IdReserva, reserva.NombreUsuario, reserva.FechaReserva.ToShortDateString(), reserva.Menu1, reserva.Menu2, reserva.Menu3, reserva.TotalPagar);
+
+                    // Recargar el DataGridView completo en caso de futuras actualizaciones
+                    CargarReservaciones();
                 }
-            }
-            catch (MySqlException ex)
-            {
-                MessageBox.Show("Error en la base de datos: " + ex.Message);
+                else
+                {
+                    MessageBox.Show("Error al guardar la reserva en la base de datos.");
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error: " + ex.Message);
+                MessageBox.Show("Error inesperado: " + ex.Message);
             }
         }
 
