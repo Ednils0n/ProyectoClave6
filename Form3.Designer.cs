@@ -44,6 +44,7 @@ namespace ProyectoClave6
             this.label7 = new System.Windows.Forms.Label();
             this.txtReservador = new System.Windows.Forms.TextBox();
             this.btnBorrarReservacion = new System.Windows.Forms.Button();
+            this.btnSalir = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvReserva)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nupMenu1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nupMenu2)).BeginInit();
@@ -148,7 +149,7 @@ namespace ProyectoClave6
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(121, 300);
+            this.button1.Location = new System.Drawing.Point(56, 300);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(281, 34);
             this.button1.TabIndex = 11;
@@ -175,7 +176,7 @@ namespace ProyectoClave6
             // 
             // btnBorrarReservacion
             // 
-            this.btnBorrarReservacion.Location = new System.Drawing.Point(475, 300);
+            this.btnBorrarReservacion.Location = new System.Drawing.Point(527, 300);
             this.btnBorrarReservacion.Name = "btnBorrarReservacion";
             this.btnBorrarReservacion.Size = new System.Drawing.Size(281, 34);
             this.btnBorrarReservacion.TabIndex = 14;
@@ -183,12 +184,23 @@ namespace ProyectoClave6
             this.btnBorrarReservacion.UseVisualStyleBackColor = true;
             this.btnBorrarReservacion.Click += new System.EventHandler(this.btnBorrarReservacion_Click);
             // 
+            // btnSalir
+            // 
+            this.btnSalir.Location = new System.Drawing.Point(343, 300);
+            this.btnSalir.Name = "btnSalir";
+            this.btnSalir.Size = new System.Drawing.Size(178, 34);
+            this.btnSalir.TabIndex = 15;
+            this.btnSalir.Text = "Salir ";
+            this.btnSalir.UseVisualStyleBackColor = true;
+            this.btnSalir.Click += new System.EventHandler(this.btnSalir_Click);
+            // 
             // Form3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.ClientSize = new System.Drawing.Size(848, 726);
+            this.Controls.Add(this.btnSalir);
             this.Controls.Add(this.btnBorrarReservacion);
             this.Controls.Add(this.txtReservador);
             this.Controls.Add(this.label7);
@@ -232,5 +244,6 @@ namespace ProyectoClave6
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txtReservador;
         private System.Windows.Forms.Button btnBorrarReservacion;
+        private System.Windows.Forms.Button btnSalir;
     }
 }
