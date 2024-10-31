@@ -103,6 +103,14 @@ namespace ProyectoClave6
 
                     // Recargar el DataGridView completo en caso de futuras actualizaciones
                     CargarReservaciones();
+
+                    // Redirigir al Form4
+                    Form4 form4 = new Form4();
+                    form4.Show();
+
+                    // Ocultar o cerrar el Form actual (opcional: elige una de las dos líneas)
+                    this.Hide();   // Oculta el formulario actual, para volver a él sin cerrarlo.
+                                   // this.Close(); // Opción alternativa: cierra el formulario actual.
                 }
                 else
                 {
@@ -114,6 +122,7 @@ namespace ProyectoClave6
                 MessageBox.Show("Error inesperado: " + ex.Message);
             }
         }
+
 
         private void btnBorrarReservacion_Click(object sender, EventArgs e)
         {
