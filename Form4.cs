@@ -20,8 +20,105 @@ namespace ProyectoClave6
             ConfigurarDataGridView();  // Configurar el DataGridView
             CargarSalasGestionadas();  // Cargar los datos al DataGridView al iniciar el formulario
         }
-
         private void GuardarSala_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Validación de que se ha ingresado la ubicación de la sala
+                if (string.IsNullOrWhiteSpace(txtUbicacion.Text))
+                {
+                    MessageBox.Show("Por favor, ingrese la ubicación de la sala.");
+                    return;
+                }
+
+                // Validación de selección de un tipo de sala
+                if (cmbTipoSala.SelectedItem == null)
+                {
+                    MessageBox.Show("Seleccione un tipo de sala.");
+                    return;
+                }
+
+                // Obtener valores de los controles del formulario
+                bool proyector = CHsipro.Checked;
+                bool oasis = CHsioasis.Checked;
+                bool cafetera = CHsicafe.Checked;
+                string ubicacionSala = txtUbicacion.Text.Trim();
+                string tipoSala = cmbTipoSala.SelectedItem.ToString();
+
+                // Obtén un `id_reserva` válido. Aquí estamos tomando el último `id` insertado.
+                int idReserva = ObtenerUltimoIdReserva();
+
+                if (idReserva == -1)
+                {
+                    MessageBox.Show("No se encontró una reserva válida para asociar a esta sala.");
+                    return;
+                }
+
+                // Crear la conexión a la base de datos
+                CConexion conexionObj = new CConexion("usuarioEjemplo", "contrasenaEjemplo");  // Reemplaza con tu usuario y contraseña
+                MySqlConnection conexion = conexionObj.EstablecerConexion();
+
+                // Crear consulta SQL para insertar la gestión de la sala
+                string query = "INSERT INTO gestion (id_reserva, proyector, oasis, cafetera, ubicacion_sala, tipo_sala) " +
+                               "VALUES (@idReserva, @proyector, @oasis, @cafetera, @ubicacionSala, @tipoSala)";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, conexion))
+                {
+                    cmd.Parameters.AddWithValue("@idReserva", idReserva);  // Utiliza el ID de reserva obtenido
+                    cmd.Parameters.AddWithValue("@proyector", proyector);
+                    cmd.Parameters.AddWithValue("@oasis", oasis);
+                    cmd.Parameters.AddWithValue("@cafetera", cafetera);
+                    cmd.Parameters.AddWithValue("@ubicacionSala", ubicacionSala);
+                    cmd.Parameters.AddWithValue("@tipoSala", tipoSala);
+
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Información de la sala guardada exitosamente.");
+                }
+
+                conexion.Close();  // Cerrar la conexión después de la operación
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show("Error en la base de datos: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error inesperado: " + ex.Message);
+            }
+        }
+        // Método para obtener el último ID de reserva
+        private int ObtenerUltimoIdReserva()
+        {
+            int ultimoId = -1;  // Valor predeterminado si no se encuentra ID
+
+            try
+            {
+                // Conexión a la base de datos
+                CConexion conexionObj = new CConexion("usuarioEjemplo", "contrasenaEjemplo");
+                MySqlConnection conexion = conexionObj.EstablecerConexion();
+
+                string query = "SELECT MAX(id) FROM reserva";  // Consulta para obtener el último ID de reserva
+
+                using (MySqlCommand cmd = new MySqlCommand(query, conexion))
+                {
+                    object result = cmd.ExecuteScalar();
+                    if (result != DBNull.Value)
+                    {
+                        ultimoId = Convert.ToInt32(result);  // Asigna el ID si se encuentra uno
+                    }
+                }
+
+                conexion.Close();  // Cierra la conexión
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al obtener el último ID de reserva: " + ex.Message);
+            }
+
+            return ultimoId;  // Devuelve el último ID o -1 si no se encontró ninguno
+        }
+
+        private void GuardarSala2_Click(object sender, EventArgs e)
         {
             try
             {
