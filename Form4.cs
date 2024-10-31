@@ -48,6 +48,43 @@ namespace ProyectoClave6
             dgvGestion.AllowUserToAddRows = false;
         }
 
+        // Método para cargar las salas gestionadas al DataGridView
+        public void CargarSalasGestionadas()
+        {
+            try
+            {
+                dgvGestion.Rows.Clear();  // Limpiar el DataGridView antes de cargar nuevos datos
+
+                CConexion conexion = new CConexion("usuarioEjemplo", "contrasenaEjemplo");  // Reemplaza con tus credenciales
+                MySqlConnection conn = conexion.EstablecerConexion();
+
+                // Consulta para obtener todas las salas gestionadas
+                string selectQuery = "SELECT * FROM gestion";
+
+                using (MySqlCommand cmd = new MySqlCommand(selectQuery, conn))
+                {
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            dgvGestion.Rows.Add(reader["id"], reader["proyector"], reader["oasis"],
+                                                reader["cafetera"], reader["ubicacion_sala"], reader["tipo_sala"]);
+                        }
+                    }
+                }
+
+                conn.Close();  // Cerrar la conexión después de la operación
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show("Error en la base de datos: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error inesperado: " + ex.Message);
+            }
+        }
+
         private void Form4_Load(object sender, EventArgs e) //Click Error
         {
 
@@ -120,44 +157,8 @@ namespace ProyectoClave6
                 MessageBox.Show("Error inesperado: " + ex.Message);
             }
 
-            // Método para cargar las salas gestionadas al DataGridView
-            private void CargarSalasGestionadas()
-            {
-                try
-                {
-                    dgvGestion.Rows.Clear();  // Limpiar el DataGridView antes de cargar nuevos datos
-
-                    CConexion conexion = new CConexion("usuarioEjemplo", "contrasenaEjemplo");  // Reemplaza con tus credenciales
-                    MySqlConnection conn = conexion.EstablecerConexion();
-
-                    // Consulta para obtener todas las salas gestionadas
-                    string selectQuery = "SELECT * FROM gestion";
-
-                    using (MySqlCommand cmd = new MySqlCommand(selectQuery, conn))
-                    {
-                        using (MySqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                dgvGestion.Rows.Add(reader["id"], reader["proyector"], reader["oasis"],
-                                                    reader["cafetera"], reader["ubicacion_sala"], reader["tipo_sala"]);
-                            }
-                        }
-                    }
-
-                    conn.Close();  // Cerrar la conexión después de la operación
-                }
-                catch (MySqlException ex)
-                {
-                    MessageBox.Show("Error en la base de datos: " + ex.Message);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error inesperado: " + ex.Message);
-                }
-
             }
         }
     }
-}
+
  
