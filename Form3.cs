@@ -99,7 +99,15 @@ namespace ProyectoClave6
                     MessageBox.Show("Reserva guardada exitosamente.");
 
                     // Añadir los datos al DataGridView
-                    dgvReserva.Rows.Add(reserva.IdReserva, reserva.NombreUsuario, reserva.FechaReserva.ToShortDateString(), reserva.Menu1, reserva.Menu2, reserva.Menu3, reserva.TotalPagar);
+                    dgvReserva.Rows.Add(
+                        reserva.IdReserva,
+                        reserva.NombreUsuario,
+                        reserva.FechaReserva.ToShortDateString(),
+                        reserva.Menu1,
+                        reserva.Menu2,
+                        reserva.Menu3,
+                        reserva.TotalPagar
+                    );
 
                     // Recargar el DataGridView completo en caso de futuras actualizaciones
                     CargarReservaciones();
@@ -108,9 +116,9 @@ namespace ProyectoClave6
                     Form4 form4 = new Form4();
                     form4.Show();
 
-                    // Ocultar o cerrar el Form actual (opcional: elige una de las dos líneas)
-                    this.Hide();   // Oculta el formulario actual, para volver a él sin cerrarlo.
-                                   // this.Close(); // Opción alternativa: cierra el formulario actual.
+                    // Ocultar o cerrar el Form actual
+                    this.Hide();  // Oculta el formulario actual
+                                  // this.Close(); // Opción alternativa: cierra el formulario actual.
                 }
                 else
                 {

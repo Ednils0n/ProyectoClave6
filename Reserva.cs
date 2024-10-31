@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
+using System.Windows.Forms;
+
 
 namespace ProyectoClave6
 {
-   // Clase Reserva que hereda de Usuario
+    // Clase Reserva que hereda de Usuario
     class Reserva : Usuario
     {
         public int IdReserva { get; private set; }  // Ahora es solo lectura externa
@@ -44,17 +46,17 @@ namespace ProyectoClave6
                 MySqlConnection conn = conexion.EstablecerConexion();
 
                 // Insertar la reserva en la base de datos
-                string insertQuery = "INSERT INTO reserva (nombre_usuario, fecha_reserva, menu1, menu2, menu3, total_pagar) " +
-                                     "VALUES (@nombreUsuario, @fechaReserva, @menu1, @menu2, @menu3, @totalPagar)";
+                string insertQuery = "INSERT INTO reserva (usuario, fecha, menu1, menu2, menu3, total) " +
+                                     "VALUES (@usuario, @fecha, @menu1, @menu2, @menu3, @total)";
 
                 using (MySqlCommand cmd = new MySqlCommand(insertQuery, conn))
                 {
-                    cmd.Parameters.AddWithValue("@nombreUsuario", NombreUsuario);
-                    cmd.Parameters.AddWithValue("@fechaReserva", FechaReserva);
+                    cmd.Parameters.AddWithValue("@usuario", NombreUsuario);
+                    cmd.Parameters.AddWithValue("@fecha", FechaReserva);
                     cmd.Parameters.AddWithValue("@menu1", Menu1);
                     cmd.Parameters.AddWithValue("@menu2", Menu2);
                     cmd.Parameters.AddWithValue("@menu3", Menu3);
-                    cmd.Parameters.AddWithValue("@totalPagar", TotalPagar);
+                    cmd.Parameters.AddWithValue("@total", TotalPagar);
 
                     cmd.ExecuteNonQuery();
 

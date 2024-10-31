@@ -21,8 +21,68 @@ namespace ProyectoClave6
             CargarSalasGestionadas();  // Cargar los datos al DataGridView al iniciar el formulario
         }
 
-        // Método para configurar las opciones del ComboBox para el tipo de sala
-        private void ConfigurarComboBox()
+        private void GuardarSala_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Validación de que se ha ingresado la ubicación de la sala
+                if (string.IsNullOrWhiteSpace(txtUbicacion.Text))
+                {
+                    MessageBox.Show("Por favor, ingrese la ubicación de la sala.");
+                    return;
+                }
+
+                // Validación de selección de un tipo de sala
+                if (cmbTipoSala.SelectedItem == null)
+                {
+                    MessageBox.Show("Seleccione un tipo de sala.");
+                    return;
+                }
+
+                // Obtener valores de los controles del formulario
+                bool proyector = CHsipro.Checked;
+                bool oasis = CHsioasis.Checked;
+                bool cafetera = CHsicafe.Checked;
+                string ubicacionSala = txtUbicacion.Text.Trim();
+                string tipoSala = cmbTipoSala.SelectedItem.ToString();
+
+                // **Asegúrate de que idReserva sea un valor válido**
+                int idReserva = 1; // Reemplaza esto con el id real de la reserva creada o seleccionada
+
+                // Crear la conexión a la base de datos
+                CConexion conexionObj = new CConexion("usuarioEjemplo", "contrasenaEjemplo");  // Reemplaza con tu usuario y contraseña
+                MySqlConnection conexion = conexionObj.EstablecerConexion();
+
+                // Crear consulta SQL para insertar la gestión de la sala
+                string query = "INSERT INTO gestion (id_reserva, proyector, oasis, cafetera, ubicacion_sala, tipo_sala) " +
+                               "VALUES (@idReserva, @proyector, @oasis, @cafetera, @ubicacionSala, @tipoSala)";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, conexion))
+                {
+                    cmd.Parameters.AddWithValue("@idReserva", idReserva);  // Aquí asegurarse de que idReserva exista en 'reserva'
+                    cmd.Parameters.AddWithValue("@proyector", proyector);
+                    cmd.Parameters.AddWithValue("@oasis", oasis);
+                    cmd.Parameters.AddWithValue("@cafetera", cafetera);
+                    cmd.Parameters.AddWithValue("@ubicacionSala", ubicacionSala);
+                    cmd.Parameters.AddWithValue("@tipoSala", tipoSala);
+
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Información de la sala guardada exitosamente.");
+                }
+
+                conexion.Close();  // Cerrar la conexión después de la operación
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show("Error en la base de datos: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error inesperado: " + ex.Message);
+            }
+        }
+            // Método para configurar las opciones del ComboBox para el tipo de sala
+            private void ConfigurarComboBox()
         {
             // Agregar opciones al ComboBox de tipo de sala
             cmbTipoSala.Items.Add("Conferencia");
@@ -84,6 +144,8 @@ namespace ProyectoClave6
                 MessageBox.Show("Error inesperado: " + ex.Message);
             }
         }
+
+
 
         private void Form4_Load(object sender, EventArgs e) //Click Error
         {
