@@ -204,7 +204,7 @@ namespace ProyectoClave6
             // 
             // btnGuardarSala
             // 
-            this.btnGuardarSala.Location = new System.Drawing.Point(149, 193);
+            this.btnGuardarSala.Location = new System.Drawing.Point(126, 220);
             this.btnGuardarSala.Name = "btnGuardarSala";
             this.btnGuardarSala.Size = new System.Drawing.Size(303, 40);
             this.btnGuardarSala.TabIndex = 15;
