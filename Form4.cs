@@ -19,6 +19,7 @@ namespace ProyectoClave6
             ConfigurarComboBox();  // Configurar opciones del ComboBox al cargar el formulario
             ConfigurarDataGridView();  // Configurar el DataGridView
             CargarSalasGestionadas();  // Cargar los datos al DataGridView al iniciar el formulario
+            LimpiarFormulario();
         }
         private void GuardarSala_Click(object sender, EventArgs e)
         {
@@ -31,7 +32,6 @@ namespace ProyectoClave6
                     return;
                 }
 
-                // Validación de selección de un tipo de sala
                 if (cmbTipoSala.SelectedItem == null)
                 {
                     MessageBox.Show("Seleccione un tipo de sala.");
@@ -46,10 +46,9 @@ namespace ProyectoClave6
                 string tipoSala = cmbTipoSala.SelectedItem.ToString();
 
                 // Crear la conexión a la base de datos
-                CConexion conexionObj = new CConexion("usuarioEjemplo", "contrasenaEjemplo");  // Reemplaza con tu usuario y contraseña
+                CConexion conexionObj = new CConexion("usuarioEjemplo", "contrasenaEjemplo");
                 MySqlConnection conexion = conexionObj.EstablecerConexion();
 
-                // Crear consulta SQL para insertar la gestión de la sala
                 string query = "INSERT INTO disponibilidad (proyector, oasis, cafetera, ubicacion_sala, tipo_sala) " +
                                "VALUES (@proyector, @oasis, @cafetera, @ubicacionSala, @tipoSala)";
 
@@ -66,7 +65,10 @@ namespace ProyectoClave6
                 }
 
                 conexion.Close();  // Cerrar la conexión después de la operación
-                CargarSalasGestionadas();  // Refrescar el DataGridView con los nuevos datos
+
+                // Refrescar el DataGridView con los nuevos datos y limpiar el formulario
+                CargarSalasGestionadas();
+                LimpiarFormulario();  // Limpiar campos después de guardar
             }
             catch (MySqlException ex)
             {
@@ -105,6 +107,7 @@ namespace ProyectoClave6
             dgvGestion.AllowUserToAddRows = false;
         }
 
+
         // Método para cargar las salas gestionadas al DataGridView
         public void CargarSalasGestionadas()
         {
@@ -112,10 +115,9 @@ namespace ProyectoClave6
             {
                 dgvGestion.Rows.Clear();  // Limpiar el DataGridView antes de cargar nuevos datos
 
-                CConexion conexion = new CConexion("usuarioEjemplo", "contrasenaEjemplo");  // Reemplaza con tus credenciales
+                CConexion conexion = new CConexion("usuarioEjemplo", "contrasenaEjemplo");
                 MySqlConnection conn = conexion.EstablecerConexion();
 
-                // Consulta para obtener todas las salas gestionadas de la tabla `disponibilidad`
                 string selectQuery = "SELECT * FROM disponibilidad";
 
                 using (MySqlCommand cmd = new MySqlCommand(selectQuery, conn))
@@ -126,11 +128,12 @@ namespace ProyectoClave6
                         {
                             dgvGestion.Rows.Add(
                                 reader["id"],
-                                reader["proyector"],
-                                reader["oasis"],
-                                reader["cafetera"],
+                                Convert.ToBoolean(reader["proyector"]) ? "Sí" : "No",
+                                Convert.ToBoolean(reader["oasis"]) ? "Sí" : "No",
+                                Convert.ToBoolean(reader["cafetera"]) ? "Sí" : "No",
                                 reader["ubicacion_sala"],
-                                reader["tipo_sala"]);
+                                reader["tipo_sala"]
+                            );
                         }
                     }
                 }
@@ -147,6 +150,18 @@ namespace ProyectoClave6
             }
         }
 
+        // Método para limpiar los campos del formulario
+        private void LimpiarFormulario()
+        {
+            txtUbicacion.Clear();
+            cmbTipoSala.SelectedIndex = 0;
+            CHsipro.Checked = false;
+            CHnopro.Checked = false;
+            CHsioasis.Checked = false;
+            CHnooasis.Checked = false;
+            CHsicafe.Checked = false;
+            CHnocafe.Checked = false;
+        }
 
         private void Form4_Load(object sender, EventArgs e) //Click Error
         {
@@ -170,19 +185,10 @@ namespace ProyectoClave6
                     return;
                 }
 
-                // Validación de opciones de equipo
-                if ((!CHsipro.Checked && !CHnopro.Checked) ||
-                    (!CHsioasis.Checked && !CHnooasis.Checked) ||
-                    (!CHsicafe.Checked && !CHnocafe.Checked))
-                {
-                    MessageBox.Show("Por favor, seleccione Sí o No para cada equipo.");
-                    return;
-                }
-
-                // Obtener valores de los controles
-                bool proyector = CHsipro.Checked;
-                bool oasis = CHsioasis.Checked;
-                bool cafetera = CHsicafe.Checked;
+                // Obtener valores de los controles y convertir a 1 o 0
+                int proyector = CHsipro.Checked ? 1 : 0;
+                int oasis = CHsioasis.Checked ? 1 : 0;
+                int cafetera = CHsicafe.Checked ? 1 : 0;
                 string ubicacionSala = txtUbicacion.Text.Trim();
                 string tipoSala = cmbTipoSala.SelectedItem.ToString();
 
