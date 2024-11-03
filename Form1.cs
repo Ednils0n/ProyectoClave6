@@ -18,13 +18,20 @@ namespace ProyectoClave6
         public Form1()
         {
             InitializeComponent();
+            //Proyecto Clave 6
+            //Hecho por:
+            //Ednilson Oswaldo Montes Landos ML23030
+            //Diego Gerardo Perez Belloso 
+            //Wilber Rogelio Magaña Mendoza
+            //Entrega: 13 de Noviembre
+            //Ingeniera: Mariela Vanessa Melendez Ascencio 
         }
 
 
 
         private void btnConectar_Click(object sender, EventArgs e)
         {
-            // Crear una instancia de la clase CConexion 
+            //Crear una instancia de la clase CConexion 
             string nombreUsuario = "usuarioEjemplo";  
             string contrasena = "contrasenaEjemplo";  
 
@@ -43,58 +50,58 @@ namespace ProyectoClave6
 
         private void btnSiguienteForms_Click(object sender, EventArgs e)
         {
-            // Crear una instancia del segundo formulario
+            //Crear una instancia del segundo formulario
             Form2 form2 = new Form2();
 
-            // Mostrar el segundo formulario
+            //Mostrar el segundo formulario
             form2.Show();
 
-            // Opcional: Ocultar el primer formulario (sin cerrarlo)
+            //Opcional: Ocultar el primer formulario (sin cerrarlo)
             this.Hide();
 
         }
 
         private void btnSalir_Click(object sender, EventArgs e)
         {
-            // Mostrar un cuadro de diálogo de confirmación
+            //Mostrar un cuadro de diálogo de confirmación
             DialogResult result = MessageBox.Show("¿Estás seguro de que deseas salir?", "Confirmar salida", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             // Verificar la respuesta del usuario
             if (result == DialogResult.Yes)
             {
-                // Si el usuario elige "Sí", cerrar la aplicación
+                //Si el usuario elige "Sí", cerrar la aplicación
                 Application.Exit();
             }
             else
             {
-                // Si el usuario elige "No", no hacer nada
-                // Se mantiene la aplicación abierta
+                //Si el usuario elige "No", no hacer nada
+                //Se mantiene la aplicación abierta
             }
         }
 
         private void btnIniciarSesion_Click(object sender, EventArgs e)
         {
-            // Verificar si los campos están vacíos
+            //Verificar si los campos están vacíos
             if (string.IsNullOrWhiteSpace(txtSesion.Text) || string.IsNullOrWhiteSpace(txtContra.Text))
             {
                 MessageBox.Show("Por favor, complete ambos campos: nombre de usuario y contraseña.");
                 return;
             }
 
-            // Validar que el usuario y la contraseña sean diferentes
+            //Validar que el usuario y la contraseña sean diferentes
             if (txtSesion.Text == txtContra.Text)
             {
                 MessageBox.Show("Error: El nombre de usuario y la contraseña no pueden ser iguales.");
                 return;
             }
 
-            // Crear una instancia de Usuario e intentar iniciar sesión
+            //Crear una instancia de Usuario e intentar iniciar sesión
             Usuario usuario = new Usuario(txtSesion.Text, txtContra.Text);
             if (usuario.IniciarSesion())
             {
                 MessageBox.Show("Inicio de sesión exitoso.");
 
-                // Crear una instancia de Form3 y mostrarlo
+                //Crear una instancia de Form3 y mostrarlo
                 Form3 form3 = new Form3();
                 form3.Show();
                 this.Hide();  // Ocultar Form1 actual
@@ -107,25 +114,25 @@ namespace ProyectoClave6
 
             try
             {
-                // Crear una instancia de la clase CConexion con el nombre de usuario y la contraseña ingresados
+                //Crear una instancia de la clase CConexion con el nombre de usuario y la contraseña ingresados
                 CConexion conexion = new CConexion(txtSesion.Text, txtContra.Text);
                 MySqlConnection conn = conexion.EstablecerConexion();
 
-                // Crear la consulta SQL
+                //Crear la consulta SQL
                 string query = "SELECT COUNT(*) FROM usuario WHERE nombre_usuario = @nombreUsuario AND contraseña = @contrasena";
 
                 using (MySqlCommand cmd = new MySqlCommand(query, conn))
                 {
-                    // Asignar los parámetros de la consulta
+                    //Asignar los parámetros de la consulta
                     cmd.Parameters.AddWithValue("@nombreUsuario", txtSesion.Text);
                     cmd.Parameters.AddWithValue("@contrasena", txtContra.Text);
 
-                    // Ejecutar la consulta y obtener el número de usuarios encontrados
+                    //Ejecutar la consulta y obtener el número de usuarios encontrados
                     int userCount = Convert.ToInt32(cmd.ExecuteScalar());
 
                     if (userCount > 0)
                     {
-                        // Mostrar mensaje de éxito antes de pasar a Form3
+                        //Mostrar mensaje de éxito antes de pasar a Form3
                         MessageBox.Show("Inicio de sesión exitoso.");
 
                         Form3 form3 = new Form3();
@@ -151,7 +158,7 @@ namespace ProyectoClave6
         private void btnEliminarUsuario_Click(object sender, EventArgs e)
         {
             {
-                // Pedir el nombre de usuario mediante un cuadro de entrada flotante
+                //Pedir el nombre de usuario mediante un cuadro de entrada flotante
                 string nombreUsuario = Interaction.InputBox("Ingrese el nombre de usuario a eliminar:",
                                                             "Eliminar Usuario",
                                                             "");
@@ -162,7 +169,7 @@ namespace ProyectoClave6
                     return;
                 }
 
-                // Pedir la contraseña mediante un cuadro de entrada flotante
+                //Pedir la contraseña mediante un cuadro de entrada flotante
                 string contrasena = Interaction.InputBox("Ingrese la contraseña del usuario:",
                                                          "Eliminar Usuario",
                                                          "");
@@ -173,7 +180,7 @@ namespace ProyectoClave6
                     return;
                 }
 
-                // Confirmar la eliminación del usuario
+                //Confirmar la eliminación del usuario
                 DialogResult result = MessageBox.Show($"¿Está seguro de que desea eliminar el usuario '{nombreUsuario}'?",
                                                       "Confirmar eliminación",
                                                       MessageBoxButtons.YesNo,
@@ -183,11 +190,11 @@ namespace ProyectoClave6
                 {
                     try
                     {
-                        // Crear la conexión a la base de datos
+                        //Crear la conexión a la base de datos
                         CConexion conexion = new CConexion("usuarioEjemplo", "contrasenaEjemplo");
                         MySqlConnection conn = conexion.EstablecerConexion();
 
-                        // Verificar si el usuario y la contraseña coinciden
+                        //Verificar si el usuario y la contraseña coinciden
                         string checkQuery = "SELECT COUNT(*) FROM usuario WHERE nombre_usuario = @nombreUsuario AND contraseña = @contrasena";
 
                         using (MySqlCommand checkCmd = new MySqlCommand(checkQuery, conn))
@@ -204,7 +211,7 @@ namespace ProyectoClave6
                             }
                         }
 
-                        // Si el usuario existe, proceder con la eliminación
+                        //Si el usuario existe, proceder con la eliminación
                         string deleteQuery = "DELETE FROM usuario WHERE nombre_usuario = @nombreUsuario AND contraseña = @contrasena";
 
                         using (MySqlCommand cmd = new MySqlCommand(deleteQuery, conn))

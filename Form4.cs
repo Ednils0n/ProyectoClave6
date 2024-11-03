@@ -17,16 +17,16 @@ namespace ProyectoClave6
         public Form4()
         {
             InitializeComponent();
-            ConfigurarComboBox();  // Configurar opciones del ComboBox al cargar el formulario
-            ConfigurarDataGridView();  // Configurar el DataGridView
-            CargarSalasGestionadas();  // Cargar los datos al DataGridView al iniciar el formulario
-            LimpiarFormulario();
+            ConfigurarComboBox();  //Configurar opciones del ComboBox al cargar el formulario
+            ConfigurarDataGridView();  //Configurar el DataGridView
+            CargarSalasGestionadas();  //Cargar los datos al DataGridView al iniciar el formulario
+            LimpiarFormulario(); //Limpiar el Formulario completo.
         }
         private void GuardarSala_Click(object sender, EventArgs e)
         {
             try
             {
-                // Validación de que se ha ingresado la ubicación de la sala
+                //Validación de que se ha ingresado la ubicación de la sala
                 if (string.IsNullOrWhiteSpace(txtUbicacion.Text))
                 {
                     MessageBox.Show("Por favor, ingrese la ubicación de la sala.");
@@ -39,14 +39,14 @@ namespace ProyectoClave6
                     return;
                 }
 
-                // Obtener valores de los controles del formulario
+                //Obtener valores de los controles del formulario
                 bool proyector = CHsipro.Checked;
                 bool oasis = CHsioasis.Checked;
                 bool cafetera = CHsicafe.Checked;
                 string ubicacionSala = txtUbicacion.Text.Trim();
                 string tipoSala = cmbTipoSala.SelectedItem.ToString();
 
-                // Crear la conexión a la base de datos
+                //Crear la conexión a la base de datos
                 CConexion conexionObj = new CConexion("usuarioEjemplo", "contrasenaEjemplo");
                 MySqlConnection conexion = conexionObj.EstablecerConexion();
 
@@ -65,11 +65,11 @@ namespace ProyectoClave6
                     MessageBox.Show("Información de la sala guardada exitosamente.");
                 }
 
-                conexion.Close();  // Cerrar la conexión después de la operación
+                conexion.Close();  //Cerrar la conexión después de la operación
 
-                // Refrescar el DataGridView con los nuevos datos y limpiar el formulario
+                //Refrescar el DataGridView con los nuevos datos y limpiar el formulario
                 CargarSalasGestionadas();
-                LimpiarFormulario();  // Limpiar campos después de guardar
+                LimpiarFormulario();  //Limpiar campos después de guardar
             }
             catch (MySqlException ex)
             {
@@ -81,17 +81,17 @@ namespace ProyectoClave6
             }
         }
 
-        // Método para configurar las opciones del ComboBox para el tipo de sala
+        //Método para configurar las opciones del ComboBox para el tipo de sala
         private void ConfigurarComboBox()
         {
-            // Agregar opciones al ComboBox de tipo de sala
+            //Agregar opciones al ComboBox de tipo de sala
             cmbTipoSala.Items.Add("Conferencia");
             cmbTipoSala.Items.Add("Reunión");
             cmbTipoSala.Items.Add("Taller");
             cmbTipoSala.SelectedIndex = 0;  // Seleccionar el primer elemento por defecto
         }
 
-        // Método para configurar el DataGridView
+        //Método para configurar el DataGridView
         private void ConfigurarDataGridView()
         {
             dgvGestion.Columns.Clear();
@@ -109,12 +109,12 @@ namespace ProyectoClave6
         }
 
 
-        // Método para cargar las salas gestionadas al DataGridView
+        //Método para cargar las salas gestionadas al DataGridView
         public void CargarSalasGestionadas()
         {
             try
             {
-                dgvGestion.Rows.Clear();  // Limpiar el DataGridView antes de cargar nuevos datos
+                dgvGestion.Rows.Clear();  //Limpiar el DataGridView antes de cargar nuevos datos
 
                 CConexion conexion = new CConexion("usuarioEjemplo", "contrasenaEjemplo");
                 MySqlConnection conn = conexion.EstablecerConexion();
@@ -139,7 +139,7 @@ namespace ProyectoClave6
                     }
                 }
 
-                conn.Close();  // Cerrar la conexión después de la operación
+                conn.Close();  //Cerrar la conexión después de la operación
             }
             catch (MySqlException ex)
             {
@@ -151,7 +151,7 @@ namespace ProyectoClave6
             }
         }
 
-        // Método para limpiar los campos del formulario
+        //Método para limpiar los campos del formulario
         private void LimpiarFormulario()
         {
             txtUbicacion.Clear();
@@ -166,14 +166,14 @@ namespace ProyectoClave6
 
         private void Form4_Load(object sender, EventArgs e) //Click Error
         {
-
+            //Fue GERARDO EL DEL ERROR JAAJAJAJ
         }
 
         private void btnGuardarSala_Click(object sender, EventArgs e)
         {
             try
             {
-                // Validación de ubicación y tipo de sala
+                //Validación de ubicación y tipo de sala
                 if (string.IsNullOrWhiteSpace(txtUbicacion.Text))
                 {
                     MessageBox.Show("Por favor, ingrese la ubicación de la sala.");
@@ -186,21 +186,21 @@ namespace ProyectoClave6
                     return;
                 }
 
-                // Obtener valores de los controles
+                //Obtener valores de los controles
                 bool proyector = CHsipro.Checked;
                 bool oasis = CHsioasis.Checked;
                 bool cafetera = CHsicafe.Checked;
                 string ubicacionSala = txtUbicacion.Text.Trim();
                 string tipoSala = cmbTipoSala.SelectedItem.ToString();
 
-                // Pasar nombre de usuario y contraseña para la instancia de Disponibilidad
+                //Pasar nombre de usuario y contraseña para la instancia de Disponibilidad
                 string nombreUsuario = "usuarioEjemplo";  // Reemplaza con el valor real o variable
                 string contrasena = "contrasenaEjemplo";  // Reemplaza con el valor real o variable
 
-                // Crear una instancia de Disponibilidad con los datos obtenidos
+                //Crear una instancia de Disponibilidad con los datos obtenidos
                 Disponibilidad disponibilidad = new Disponibilidad(nombreUsuario, contrasena, proyector, oasis, cafetera, ubicacionSala, tipoSala);
 
-                // Guardar la disponibilidad en la base de datos
+                //Guardar la disponibilidad en la base de datos
                 if (disponibilidad.GuardarDisponibilidad())
                 {
                     MessageBox.Show("Información de la sala guardada exitosamente.");
@@ -218,9 +218,10 @@ namespace ProyectoClave6
             }
         }
 
+        //Boton Salir
         private void btnSalir_Click(object sender, EventArgs e)
         {
-            // Mostrar un cuadro de diálogo de confirmación
+            //Mostrar un cuadro de diálogo de confirmación
             DialogResult result = MessageBox.Show("¿Estás seguro de que deseas salir?", "Confirmar salida", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             // Verificar la respuesta del usuario
@@ -236,10 +237,11 @@ namespace ProyectoClave6
             }
         }
 
+        //Boton Borrar Sala
         private void txtBorrarSala_Click(object sender, EventArgs e)
         {
             {
-                // Solicitar el ID de la disponibilidad a eliminar
+                //Solicitar el ID de la disponibilidad a eliminar
                 string idStr = Microsoft.VisualBasic.Interaction.InputBox("Ingrese el ID de la disponibilidad a eliminar:", "Borrar Disponibilidad", "");
 
                 // Verificar si el usuario ingresó un valor y si es un número válido
@@ -249,7 +251,7 @@ namespace ProyectoClave6
                     return;
                 }
 
-                // Confirmar eliminación
+                //Confirmar eliminación
                 DialogResult confirmacion = MessageBox.Show("¿Está seguro de que desea eliminar este registro?", "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (confirmacion == DialogResult.No)
                 {
@@ -258,11 +260,11 @@ namespace ProyectoClave6
 
                 try
                 {
-                    // Crear la conexión a la base de datos
+                    //Crear la conexión a la base de datos
                     CConexion conexionObj = new CConexion("usuarioEjemplo", "contrasenaEjemplo"); // Reemplaza con tus credenciales
                     MySqlConnection conexion = conexionObj.EstablecerConexion();
 
-                    // Consulta SQL para eliminar el registro con el ID especificado
+                    //Consulta SQL para eliminar el registro con el ID especificado
                     string query = "DELETE FROM disponibilidad WHERE id = @idDisponibilidad";
 
                     using (MySqlCommand cmd = new MySqlCommand(query, conexion))
@@ -273,7 +275,7 @@ namespace ProyectoClave6
                         if (rowsAffected > 0)
                         {
                             MessageBox.Show("Disponibilidad eliminada exitosamente.");
-                            CargarSalasGestionadas(); // Refrescar el DataGridView después de la eliminación
+                            CargarSalasGestionadas(); //Refrescar el DataGridView después de la eliminación
                         }
                         else
                         {
@@ -281,7 +283,7 @@ namespace ProyectoClave6
                         }
                     }
 
-                    conexion.Close(); // Cerrar la conexión después de la operación
+                    conexion.Close(); //Cerrar la conexión después de la operación
                 }
                 catch (MySqlException ex)
                 {

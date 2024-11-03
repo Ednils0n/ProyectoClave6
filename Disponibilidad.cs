@@ -7,7 +7,7 @@ using MySql.Data.MySqlClient;
 
 namespace ProyectoClave6
 {
-    public class Disponibilidad : Usuario
+    public class Disponibilidad : Usuario  //Clase Disponibilidad heredada de Usuario.
     {
         public int IdDisponibilidad { get; private set; }
         public bool Proyector { get; set; }
@@ -16,9 +16,9 @@ namespace ProyectoClave6
         public string UbicacionSala { get; set; }
         public string TipoSala { get; set; }
 
-        // Constructor que llama al constructor base de Usuario y asigna las propiedades de Disponibilidad
+        //Constructor que llama al constructor base de Usuario y asigna las propiedades de Disponibilidad
         public Disponibilidad(string nombreUsuario, string contrasena, bool proyector, bool oasis, bool cafetera, string ubicacionSala, string tipoSala)
-            : base(nombreUsuario, contrasena)  // Llamada al constructor de Usuario
+            : base(nombreUsuario, contrasena)  //Llamada al constructor de Usuario
         {
             Proyector = proyector;
             Oasis = oasis;
@@ -27,7 +27,7 @@ namespace ProyectoClave6
             TipoSala = tipoSala;
         }
 
-        // Método para guardar la disponibilidad en la base de datos
+        //Método para guardar la disponibilidad en la base de datos
         public bool GuardarDisponibilidad()
         {
             try
@@ -48,7 +48,7 @@ namespace ProyectoClave6
 
                     cmd.ExecuteNonQuery();
 
-                    // Obtener el último ID insertado
+                    //Obtener el último ID insertado
                     cmd.CommandText = "SELECT LAST_INSERT_ID()";
                     IdDisponibilidad = Convert.ToInt32(cmd.ExecuteScalar());
 
