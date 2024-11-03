@@ -185,39 +185,31 @@ namespace ProyectoClave6
                     return;
                 }
 
-                // Obtener valores de los controles y convertir a 1 o 0
-                int proyector = CHsipro.Checked ? 1 : 0;
-                int oasis = CHsioasis.Checked ? 1 : 0;
-                int cafetera = CHsicafe.Checked ? 1 : 0;
+                // Obtener valores de los controles
+                bool proyector = CHsipro.Checked;
+                bool oasis = CHsioasis.Checked;
+                bool cafetera = CHsicafe.Checked;
                 string ubicacionSala = txtUbicacion.Text.Trim();
                 string tipoSala = cmbTipoSala.SelectedItem.ToString();
 
-                // Crear conexión a la base de datos
-                CConexion conexionObj = new CConexion("usuarioEjemplo", "contrasenaEjemplo");  // Reemplaza con tu usuario y contraseña
-                MySqlConnection conexion = conexionObj.EstablecerConexion();
+                // Pasar nombre de usuario y contraseña para la instancia de Disponibilidad
+                string nombreUsuario = "usuarioEjemplo";  // Reemplaza con el valor real o variable
+                string contrasena = "contrasenaEjemplo";  // Reemplaza con el valor real o variable
 
-                // Crear consulta SQL para insertar la gestión de la sala
-                string query = "INSERT INTO disponibilidad (proyector, oasis, cafetera, ubicacion_sala, tipo_sala) " +
-                               "VALUES (@proyector, @oasis, @cafetera, @ubicacionSala, @tipoSala)";
+                // Crear una instancia de Disponibilidad con los datos obtenidos
+                Disponibilidad disponibilidad = new Disponibilidad(nombreUsuario, contrasena, proyector, oasis, cafetera, ubicacionSala, tipoSala);
 
-                using (MySqlCommand cmd = new MySqlCommand(query, conexion))
+                // Guardar la disponibilidad en la base de datos
+                if (disponibilidad.GuardarDisponibilidad())
                 {
-                    cmd.Parameters.AddWithValue("@proyector", proyector);
-                    cmd.Parameters.AddWithValue("@oasis", oasis);
-                    cmd.Parameters.AddWithValue("@cafetera", cafetera);
-                    cmd.Parameters.AddWithValue("@ubicacionSala", ubicacionSala);
-                    cmd.Parameters.AddWithValue("@tipoSala", tipoSala);
-
-                    cmd.ExecuteNonQuery();
                     MessageBox.Show("Información de la sala guardada exitosamente.");
+                    CargarSalasGestionadas();  // Refrescar el DataGridView con los nuevos datos
+                    LimpiarFormulario();       // Limpiar los campos del formulario
                 }
-
-                conexion.Close();  // Cerrar la conexión
-                CargarSalasGestionadas();  // Refrescar el DataGridView con los nuevos datos
-            }
-            catch (MySqlException ex)
-            {
-                MessageBox.Show("Error en la base de datos: " + ex.Message);
+                else
+                {
+                    MessageBox.Show("Error al guardar la disponibilidad.");
+                }
             }
             catch (Exception ex)
             {

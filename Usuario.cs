@@ -7,8 +7,8 @@ using MySql.Data.MySqlClient;
 
 namespace ProyectoClave6
 {
-   // Clase Usuario (clase base)
-    class Usuario
+    // Clase Usuario (clase base)
+    public class Usuario
     {
         public string NombreUsuario { get; set; }
         public string Contrasena { get; set; }
