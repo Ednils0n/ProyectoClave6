@@ -7,20 +7,20 @@ using MySql.Data.MySqlClient;
 
 namespace ProyectoClave6
 {
-    // Clase Usuario (clase base)
+    //Clase Usuario (clase base)
     public class Usuario
     {
         public string NombreUsuario { get; set; }
         public string Contrasena { get; set; }
 
-        // Constructor de la clase Usuario
+        //Constructor de la clase Usuario
         public Usuario(string nombreUsuario, string contrasena)
         {
             NombreUsuario = nombreUsuario;
             Contrasena = contrasena;
         }
 
-        // Método para iniciar sesión
+        //Método para iniciar sesión
         public bool IniciarSesion()
         {
             CConexion conexion = new CConexion(NombreUsuario, Contrasena);
@@ -38,13 +38,13 @@ namespace ProyectoClave6
             }
         }
 
-        // Método para registrar un nuevo usuario
+        //Método para registrar un nuevo usuario
         public bool RegistrarUsuario()
         {
             CConexion conexion = new CConexion(NombreUsuario, Contrasena);
             MySqlConnection conn = conexion.EstablecerConexion();
 
-            // Verificar si el usuario ya existe
+            //Verificar si el usuario ya existe
             string checkQuery = "SELECT COUNT(*) FROM usuario WHERE nombre_usuario = @nombreUsuario";
 
             using (MySqlCommand checkCmd = new MySqlCommand(checkQuery, conn))
@@ -54,11 +54,11 @@ namespace ProyectoClave6
                 int userCount = Convert.ToInt32(checkCmd.ExecuteScalar());
                 if (userCount > 0)
                 {
-                    return false;  // El usuario ya existe, no se puede registrar
+                    return false;  //El usuario ya existe, no se puede registrar
                 }
             }
 
-            // Registrar un nuevo usuario
+            //Registrar un nuevo usuario
             string insertQuery = "INSERT INTO usuario (nombre_usuario, contraseña) VALUES (@nombreUsuario, @contrasena)";
 
             using (MySqlCommand cmd = new MySqlCommand(insertQuery, conn))
@@ -67,7 +67,7 @@ namespace ProyectoClave6
                 cmd.Parameters.AddWithValue("@contrasena", Contrasena);
 
                 cmd.ExecuteNonQuery();
-                return true;  // Usuario registrado exitosamente
+                return true;  //Usuario registrado exitosamente
             }
         }
     }
