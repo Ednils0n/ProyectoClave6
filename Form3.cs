@@ -17,18 +17,18 @@ namespace ProyectoClave6
         public Form3()
         {
             InitializeComponent();
-            ConfigurarDataGridView();  // Configurar el DataGridView cuando se crea el Form
+            ConfigurarDataGridView();  //Configurar el DataGridView cuando se crea el Form
         }
 
         private void ConfigurarDataGridView()
         {
-            // Limpiamos cualquier columna anterior que pueda tener el DataGridView
+            //Limpiamos cualquier columna anterior que pueda tener el DataGridView
             dgvReserva.Columns.Clear();
 
-            // Agregar columna para el ID (que será generado por MySQL)
+            //Agregar columna para el ID (que será generado por MySQL)
             dgvReserva.Columns.Add("id", "ID");
 
-            // Agregar las demás columnas necesarias al DataGridView
+            //Agregar las demás columnas necesarias al DataGridView
             dgvReserva.Columns.Add("Usuario", "Usuario");
             dgvReserva.Columns.Add("Fecha", "Fecha de Reserva");
             dgvReserva.Columns.Add("Menu1", "Cantidad Menú 1");
@@ -36,38 +36,38 @@ namespace ProyectoClave6
             dgvReserva.Columns.Add("Menu3", "Cantidad Menú 3");
             dgvReserva.Columns.Add("Total", "Total a Pagar");
 
-            // Configuramos el ajuste de tamaño de las columnas
+            //Configuramos el ajuste de tamaño de las columnas
             dgvReserva.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            // Hacemos que el DataGridView no sea editable directamente por el usuario
+            //Hacemos que el DataGridView no sea editable directamente por el usuario
             dgvReserva.ReadOnly = true;
 
-            // Establecer el modo de selección a "FullRowSelect" para que seleccione toda la fila al hacer clic
+            //Establecer el modo de selección a "FullRowSelect" para que seleccione toda la fila al hacer clic
             dgvReserva.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
-            // Evitamos la adición de nuevas filas por el usuario (solo mediante el código)
+            //Evitamos la adición de nuevas filas por el usuario (solo mediante el código)
             dgvReserva.AllowUserToAddRows = false;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)  //se me olvido ponerle nombre al boton pero el belloso le dio click jajaja
         {
             try
             {
-                // Validar que el campo de usuario no esté vacío
+                //Validar que el campo de usuario no esté vacío
                 if (string.IsNullOrWhiteSpace(txtReservador.Text))
                 {
                     MessageBox.Show("Debe ingresar un nombre de usuario.");
                     return;
                 }
 
-                // Validar que se hayan seleccionado cantidades en los NumericUpDowns
+                //Validar que se hayan seleccionado cantidades en los Numeric
                 if (nupMenu1.Value == 0 && nupMenu2.Value == 0 && nupMenu3.Value == 0)
                 {
                     MessageBox.Show("Debe seleccionar al menos un menú.");
                     return;
                 }
 
-                // Validar que se haya seleccionado una fecha válida
+                //Validar que se haya seleccionado una fecha válida
                 DateTime fechaReserva = dtmReservacion.Value;
                 if (fechaReserva < DateTime.Now.Date)
                 {
@@ -75,7 +75,7 @@ namespace ProyectoClave6
                     return;
                 }
 
-                // Validar que el número total de asistentes no exceda 25
+                //Validar que el número total de asistentes no exceda 25
                 int totalAsistentes = (int)nupMenu1.Value + (int)nupMenu2.Value + (int)nupMenu3.Value;
                 if (totalAsistentes > 25)
                 {
@@ -83,7 +83,7 @@ namespace ProyectoClave6
                     return;
                 }
 
-                // Crear una instancia de Reserva y calcular el total
+                //Crear una instancia de Reserva y calcular el total
                 Reserva reserva = new Reserva(
                     txtReservador.Text.Trim(),
                     "contrasenaEjemplo",  // Reemplaza con la contraseña correcta si es necesario
@@ -93,12 +93,12 @@ namespace ProyectoClave6
                     (int)nupMenu3.Value
                 );
 
-                // Guardar la reserva en la base de datos
+                //Guardar la reserva en la base de datos
                 if (reserva.GuardarReserva())
                 {
                     MessageBox.Show("Reserva guardada exitosamente.");
 
-                    // Añadir los datos al DataGridView
+                    //Añadir los datos al DataGridView
                     dgvReserva.Rows.Add(
                         reserva.IdReserva,
                         reserva.NombreUsuario,
@@ -109,16 +109,15 @@ namespace ProyectoClave6
                         reserva.TotalPagar
                     );
 
-                    // Recargar el DataGridView completo en caso de futuras actualizaciones
+                    //Recargar el DataGridView completo en caso de futuras actualizaciones
                     CargarReservaciones();
 
-                    // Redirigir al Form4
+                    //Redirigir al Form4
                     Form4 form4 = new Form4();
                     form4.Show();
 
-                    // Ocultar o cerrar el Form actual
-                    this.Hide();  // Oculta el formulario actual
-                                  // this.Close(); // Opción alternativa: cierra el formulario actual.
+                    //Ocultar o cerrar el Form actual
+                    this.Hide();  //Oculta el formulario actual                                 
                 }
                 else
                 {
@@ -134,7 +133,7 @@ namespace ProyectoClave6
 
         private void btnBorrarReservacion_Click(object sender, EventArgs e)
         {
-            // Pedir el ID de la reservación
+            //Pedir el ID de la reservación
             string idReservaStr = Interaction.InputBox("Ingrese el ID de la reservación a eliminar:", "Borrar Reservación", "");
 
             if (string.IsNullOrWhiteSpace(idReservaStr) || !int.TryParse(idReservaStr, out int idReserva))
@@ -145,11 +144,11 @@ namespace ProyectoClave6
 
             try
             {
-                // Establecer la conexión a la base de datos
+                //Establecer la conexión a la base de datos
                 CConexion conexion = new CConexion("usuario", "contraseña");
                 MySqlConnection conn = conexion.EstablecerConexion();
 
-                // Consulta DELETE
+                //Consulta DELETE
                 string deleteQuery = "DELETE FROM reserva WHERE id = @idReserva";
 
                 using (MySqlCommand cmd = new MySqlCommand(deleteQuery, conn))
@@ -167,7 +166,7 @@ namespace ProyectoClave6
                         MessageBox.Show("No se encontró una reservación con ese ID.");
                     }
                 }
-                conn.Close();  // Cerrar la conexión después de la operación
+                conn.Close();  //Cerrar la conexión después de la operación
             }
             catch (MySqlException ex)
             {
@@ -184,14 +183,14 @@ namespace ProyectoClave6
         {
             try
             {
-                // Limpiar las filas del DataGridView
+                //Limpiar las filas del DataGridView
                 dgvReserva.Rows.Clear();
 
-                // Establecer la conexión a la base de datos
+                //Establecer la conexión a la base de datos
                 CConexion conexion = new CConexion("usuario", "contraseña");  // Ajusta con tus credenciales
                 MySqlConnection conn = conexion.EstablecerConexion();
 
-                // Consulta para obtener todas las reservaciones
+                //Consulta para obtener todas las reservaciones
                 string selectQuery = "SELECT * FROM reserva";
 
                 using (MySqlCommand cmd = new MySqlCommand(selectQuery, conn))
@@ -207,7 +206,7 @@ namespace ProyectoClave6
                     }
                 }
 
-                conn.Close();  // Cerrar la conexión después de la operación
+                conn.Close();  //Cerrar la conexión después de la operación
             }
             catch (MySqlException ex)
             {
@@ -221,19 +220,19 @@ namespace ProyectoClave6
 
         private void btnSalir_Click(object sender, EventArgs e)
         {
-            // Mostrar un cuadro de diálogo de confirmación
+            //Mostrar un cuadro de diálogo de confirmación
             DialogResult result = MessageBox.Show("¿Estás seguro de que deseas salir?", "Confirmar salida", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-            // Verificar la respuesta del usuario
+            //Verificar la respuesta del usuario
             if (result == DialogResult.Yes)
             {
-                // Si el usuario elige "Sí", cerrar la aplicación
+                //Si el usuario elige "Sí", cerrar la aplicación
                 Application.Exit();
             }
             else
             {
-                // Si el usuario elige "No", no hacer nada
-                // Se mantiene la aplicación abierta
+                //Si el usuario elige "No", no hacer nada
+                //Se mantiene la aplicación abierta
             }
         }
     }
