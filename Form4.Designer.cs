@@ -230,6 +230,7 @@ namespace ProyectoClave6
             this.txtBorrarSala.TabIndex = 17;
             this.txtBorrarSala.Text = "Borrar Sala";
             this.txtBorrarSala.UseVisualStyleBackColor = true;
+            this.txtBorrarSala.Click += new System.EventHandler(this.txtBorrarSala_Click);
             // 
             // btnSalir
             // 

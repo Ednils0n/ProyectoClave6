@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using Microsoft.VisualBasic;
 
 namespace ProyectoClave6
 {
@@ -232,6 +233,64 @@ namespace ProyectoClave6
             {
                 // Si el usuario elige "No", no hacer nada
                 // Se mantiene la aplicación abierta
+            }
+        }
+
+        private void txtBorrarSala_Click(object sender, EventArgs e)
+        {
+            {
+                // Solicitar el ID de la disponibilidad a eliminar
+                string idStr = Microsoft.VisualBasic.Interaction.InputBox("Ingrese el ID de la disponibilidad a eliminar:", "Borrar Disponibilidad", "");
+
+                // Verificar si el usuario ingresó un valor y si es un número válido
+                if (string.IsNullOrWhiteSpace(idStr) || !int.TryParse(idStr, out int idDisponibilidad))
+                {
+                    MessageBox.Show("Debe ingresar un ID de disponibilidad válido.");
+                    return;
+                }
+
+                // Confirmar eliminación
+                DialogResult confirmacion = MessageBox.Show("¿Está seguro de que desea eliminar este registro?", "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (confirmacion == DialogResult.No)
+                {
+                    return;
+                }
+
+                try
+                {
+                    // Crear la conexión a la base de datos
+                    CConexion conexionObj = new CConexion("usuarioEjemplo", "contrasenaEjemplo"); // Reemplaza con tus credenciales
+                    MySqlConnection conexion = conexionObj.EstablecerConexion();
+
+                    // Consulta SQL para eliminar el registro con el ID especificado
+                    string query = "DELETE FROM disponibilidad WHERE id = @idDisponibilidad";
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, conexion))
+                    {
+                        cmd.Parameters.AddWithValue("@idDisponibilidad", idDisponibilidad);
+
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("Disponibilidad eliminada exitosamente.");
+                            CargarSalasGestionadas(); // Refrescar el DataGridView después de la eliminación
+                        }
+                        else
+                        {
+                            MessageBox.Show("No se encontró una disponibilidad con ese ID.");
+                        }
+                    }
+
+                    conexion.Close(); // Cerrar la conexión después de la operación
+                }
+                catch (MySqlException ex)
+                {
+                    MessageBox.Show("Error en la base de datos: " + ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error inesperado: " + ex.Message);
+                }
             }
         }
     }
