@@ -46,6 +46,8 @@ namespace ProyectoClave6
             this.cmbTipoSala = new System.Windows.Forms.ComboBox();
             this.btnGuardarSala = new System.Windows.Forms.Button();
             this.dgvGestion = new System.Windows.Forms.DataGridView();
+            this.txtBorrarSala = new System.Windows.Forms.Button();
+            this.btnSalir = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvGestion)).BeginInit();
             this.SuspendLayout();
             // 
@@ -204,7 +206,7 @@ namespace ProyectoClave6
             // 
             // btnGuardarSala
             // 
-            this.btnGuardarSala.Location = new System.Drawing.Point(126, 220);
+            this.btnGuardarSala.Location = new System.Drawing.Point(30, 220);
             this.btnGuardarSala.Name = "btnGuardarSala";
             this.btnGuardarSala.Size = new System.Drawing.Size(303, 40);
             this.btnGuardarSala.TabIndex = 15;
@@ -220,12 +222,33 @@ namespace ProyectoClave6
             this.dgvGestion.Size = new System.Drawing.Size(737, 220);
             this.dgvGestion.TabIndex = 16;
             // 
+            // txtBorrarSala
+            // 
+            this.txtBorrarSala.Location = new System.Drawing.Point(464, 220);
+            this.txtBorrarSala.Name = "txtBorrarSala";
+            this.txtBorrarSala.Size = new System.Drawing.Size(303, 40);
+            this.txtBorrarSala.TabIndex = 17;
+            this.txtBorrarSala.Text = "Borrar Sala";
+            this.txtBorrarSala.UseVisualStyleBackColor = true;
+            // 
+            // btnSalir
+            // 
+            this.btnSalir.Location = new System.Drawing.Point(339, 220);
+            this.btnSalir.Name = "btnSalir";
+            this.btnSalir.Size = new System.Drawing.Size(119, 40);
+            this.btnSalir.TabIndex = 18;
+            this.btnSalir.Text = "Salir";
+            this.btnSalir.UseVisualStyleBackColor = true;
+            this.btnSalir.Click += new System.EventHandler(this.btnSalir_Click);
+            // 
             // Form4
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.ClientSize = new System.Drawing.Size(800, 565);
+            this.Controls.Add(this.btnSalir);
+            this.Controls.Add(this.txtBorrarSala);
             this.Controls.Add(this.dgvGestion);
             this.Controls.Add(this.btnGuardarSala);
             this.Controls.Add(this.cmbTipoSala);
@@ -271,5 +294,7 @@ namespace ProyectoClave6
         private System.Windows.Forms.ComboBox cmbTipoSala;
         private System.Windows.Forms.Button btnGuardarSala;
         private System.Windows.Forms.DataGridView dgvGestion;
+        private System.Windows.Forms.Button txtBorrarSala;
+        private System.Windows.Forms.Button btnSalir;
     }
 }

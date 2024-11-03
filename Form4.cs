@@ -216,6 +216,24 @@ namespace ProyectoClave6
                 MessageBox.Show("Error inesperado: " + ex.Message);
             }
         }
+
+        private void btnSalir_Click(object sender, EventArgs e)
+        {
+            // Mostrar un cuadro de diálogo de confirmación
+            DialogResult result = MessageBox.Show("¿Estás seguro de que deseas salir?", "Confirmar salida", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            // Verificar la respuesta del usuario
+            if (result == DialogResult.Yes)
+            {
+                // Si el usuario elige "Sí", cerrar la aplicación
+                Application.Exit();
+            }
+            else
+            {
+                // Si el usuario elige "No", no hacer nada
+                // Se mantiene la aplicación abierta
+            }
+        }
     }
 }
 
