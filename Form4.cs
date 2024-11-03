@@ -115,8 +115,8 @@ namespace ProyectoClave6
                 CConexion conexion = new CConexion("usuarioEjemplo", "contrasenaEjemplo");  // Reemplaza con tus credenciales
                 MySqlConnection conn = conexion.EstablecerConexion();
 
-                // Consulta para obtener todas las salas gestionadas
-                string selectQuery = "SELECT * FROM gestion";
+                // Consulta para obtener todas las salas gestionadas de la tabla `disponibilidad`
+                string selectQuery = "SELECT * FROM disponibilidad";
 
                 using (MySqlCommand cmd = new MySqlCommand(selectQuery, conn))
                 {
@@ -124,8 +124,13 @@ namespace ProyectoClave6
                     {
                         while (reader.Read())
                         {
-                            dgvGestion.Rows.Add(reader["id"], reader["proyector"], reader["oasis"],
-                                                reader["cafetera"], reader["ubicacion_sala"], reader["tipo_sala"]);
+                            dgvGestion.Rows.Add(
+                                reader["id"],
+                                reader["proyector"],
+                                reader["oasis"],
+                                reader["cafetera"],
+                                reader["ubicacion_sala"],
+                                reader["tipo_sala"]);
                         }
                     }
                 }
@@ -141,7 +146,6 @@ namespace ProyectoClave6
                 MessageBox.Show("Error inesperado: " + ex.Message);
             }
         }
-
 
 
         private void Form4_Load(object sender, EventArgs e) //Click Error
