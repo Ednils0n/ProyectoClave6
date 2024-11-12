@@ -18,13 +18,14 @@ namespace ProyectoClave6
         public Form1()
         {
             InitializeComponent();
-            //Proyecto Clave 6
+            //Proyecto Clave5 Grupo 6
             //Hecho por:
             //Ednilson Oswaldo Montes Landos ML23030
             //Diego Gerardo Perez Belloso 
             //Wilber Rogelio Magaña Mendoza
             //Entrega: 13 de Noviembre
             //Ingeniera: Mariela Vanessa Melendez Ascencio 
+            //El nombre del proyecto se quedo en proyecto clave 6 por que nuestro era el 6.JAJJa PARA EVITAR INCOVENIENTES.
         }
 
 
@@ -239,6 +240,7 @@ namespace ProyectoClave6
                     {
                         MessageBox.Show("Error inesperado: " + ex.Message);
                     }
+                    //Apruebenos :)
                 }
             }
         }
